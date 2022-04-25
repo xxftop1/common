@@ -10,6 +10,7 @@
         class="sidebar-fold"
       ></i>
     </div> -->
+    <!-- <span>{{ routes }}</span> -->
     <div class="sidebar-box">
       <el-menu
         :default-openeds="defaultOpeneds"
@@ -30,7 +31,6 @@
         </SidebarItem>
       </el-menu>
     </div>
-    <span>{{ activeTab }}</span>
   </div>
 </template>
 

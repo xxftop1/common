@@ -16,8 +16,9 @@
 </template>
 
 <script>
-import { removeUserInfo } from "../sdk/cookie";
-import store from "../store/global-register";
+import { removeUserInfo, getToken } from "../sdk/cookie";
+import network from "../api/index.js";
+import api from "../sdk/api.js";
 export default {
   name: "",
   data() {
@@ -35,16 +36,27 @@ export default {
     /**
      * 登出
      */
-    logout() {
-      sessionStorage.clear();
-      localStorage.clear();
-      removeUserInfo();
-      if (!window.__POWERED_BY_QIANKUN__) {
-        this.$router.push("/login");
-        return;
+    async logout() {
+      try {
+        const token = getToken();
+        if (!token) {
+          return;
+        }
+        // this.budgetForm.sid
+        const res = await network.getRequest(api.Logout);
+        if (res && res.data.code === 200) {
+          sessionStorage.clear();
+          localStorage.clear();
+          removeUserInfo();
+          if (!window.__POWERED_BY_QIANKUN__) {
+            this.$router.push("/login");
+            return;
+          }
+          window.history.replaceState(null, "", "/login");
+        }
+      } catch (error) {
+        console.log(error);
       }
-      window.history.replaceState(null, "", "/login");
-      // this.setLoginStatus(false);
     },
   },
 };

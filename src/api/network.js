@@ -22,7 +22,9 @@ if (pathname && pathname.includes('sub-user')) {
   baseURL = prevUrl + '/user';
 } else if (pathname && pathname.includes('sub-csop')) {
   baseURL = prevUrl + '/csop';
-} else {
+} else if (pathname && pathname.includes('sub-crm')) {
+  baseURL = prevUrl + '/crm';
+}else {
   baseURL = prevUrl + '/user';
 }
 let config = {
@@ -36,7 +38,7 @@ const _axios = axios.create(config);
 _axios.interceptors.request.use(config => {
   //添加取消标记
   // config.cancelToken = new axios.CancelToken(cancel => {
-  //   debugger
+  //   
   //   window.axiosCancel.push({
   //     cancel
   //   })

@@ -1,4 +1,5 @@
 export default {
   Login: '/admin/login',
-  UserPermission:'/permission/getUserPermission',
+  UserPermission: '/permission/getUserPermission',
+  Logout: '/admin/logout',
 }

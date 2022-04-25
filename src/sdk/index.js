@@ -18,6 +18,21 @@ const getDistById = (id) => {
   return [];
 };
 
+
+/**
+ * 获取数据字典
+ * @param {} id 
+ * @returns 
+ */
+const getDistBytype = (type) => {
+  let dictList = localStorage.getItem("dictList");
+  if (dictList) {
+    let dictAll = JSON.parse(dictList);
+    let child = dictAll.find(ele => ele.dictType === type)
+    return child ? child.childs : {};
+  }
+  return [];
+};
 /**
  * 函数防抖
  */
@@ -64,6 +79,7 @@ const throttle = (fn, delay) => {
 export default {
   getToken,
   getDistById,
+  getDistBytype,
   getUserInfo,
   debounce,
   throttle

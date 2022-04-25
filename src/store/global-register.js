@@ -27,12 +27,6 @@ function registerGlobalModule(store, props = {}, router = {}) {
     user: {},
     tabs: [], //底部菜单栏
     activeTab: {} //激活tab
-    // tabs: {
-    //   //user模块
-    //   sub_user: [],
-    //   // csop模块
-    //   sub_csop: []
-    // }
   };
 
   // 将父应用的数据存储到子应用中，命名空间固定为global
@@ -109,25 +103,33 @@ function registerGlobalModule(store, props = {}, router = {}) {
 
 
         // 登出
-        logOut({
+        async logout({
           commit,
           dispatch
         }) {
-          removeUserInfo();
-          // to(api.logout())
-          commit('setUser')
-          commit('setMenu')
-          commit('setApp')
-          dispatch('setGlobalState')
-          //单独运行
-          if (router) {
-            router && router.replace && router.replace({
-              name: 'Login'
-            })
-          } else {
-            window.history.replaceState(null, '', '/login')
+          try {
+            const res = await getRequest(api.Logout);
+            const {
+              code
+            } = res.data;
+            if (code && code === 200) {
+              removeUserInfo();
+              commit('setUser')
+              commit('setMenu')
+              commit('setApp')
+              dispatch('setGlobalState')
+              //单独运行
+              if (router) {
+                router && router.replace && router.replace({
+                  name: 'Login'
+                })
+              } else {
+                window.history.replaceState(null, '', '/login')
+              }
+            }
+          } catch (error) {
+            console.log(error);
           }
-          // resetRouter && resetRouter() // 重置路由
         },
 
         setActiveTab({

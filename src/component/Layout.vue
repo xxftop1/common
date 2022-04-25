@@ -10,7 +10,7 @@
           <menu-index :routes="routes"></menu-index>
         </aside>
         <section class="main-box">
-          <main>
+          <main :class="[isSetting ? 'setting-main' : 'other-main']">
             <slot></slot>
           </main>
           <footer class="main-box__footer">
@@ -45,6 +45,11 @@ export default {
   created() {},
   //生命周期 - 挂载完成（访问DOM元素）
   mounted() {},
+  computed: {
+    isSetting() {
+      return this.$route.fullPath.includes("setting");
+    },
+  },
   //事件
   methods: {},
 };
@@ -62,11 +67,17 @@ export default {
       flex-direction: column;
       height: calc(100vh - 50px);
       overflow: hidden;
-      main {
+      .other-main {
         height: calc(100% - 80px);
         background: #ffffff;
         box-shadow: 4px 4px 6px 0px #dce0ee, -4px -4px 6px 0px #dce0ee;
         margin: 20px;
+        overflow: hidden;
+      }
+      .setting-main {
+        height: calc(100% - 40px);
+        background: #ffffff;
+        overflow: hidden;
       }
       &__footer {
         height: 40px;

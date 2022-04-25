@@ -125,12 +125,14 @@
 </template>
 
 <script>
-import store from "../../store";
 import network from "../../api/index.js";
 import api from "../../sdk/api.js";
-import {setUserInfo } from '../../sdk/cookie.js';
+import { setUserInfo } from "../../sdk/cookie.js";
 
 export default {
+  props: {
+    currentApp: String,
+  },
   name: "Login",
   data() {
     const validator = (rule, value, callback) => {
@@ -217,16 +219,20 @@ export default {
         if (this.errorMsg !== "") {
           this.errorMsg = "";
         }
-        const params = {
+        let params = {
           loginName: this.form.email.trim(),
           password: this.form.password,
           code: this.form.captcha.trim(),
         };
+        // 子应用单独访问
+        if (!window.__POWERED_BY_QIANKUN__) {
+          params.currentApp = this.currentApp;
+        }
         try {
           const res = await network.postRequest(api.Login, params);
           if (res && res.data.code === 200) {
             this.submitStatus = false;
-            const { token, userInfo,permissionList} = res.data.data;
+            const { token, userInfo, permissionList } = res.data.data;
             let data = {
               ...userInfo,
               token,

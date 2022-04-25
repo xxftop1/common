@@ -61,7 +61,7 @@ export default {
         return [];
       }
       return this.tabs.sort(function (a, b) {
-        return a.sort - b.sort <= 0;
+        return a.order - b.order;
       });
     },
   },
