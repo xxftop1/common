@@ -2,9 +2,28 @@ import {
   getToken,
   getUserInfo
 } from './cookie';
+import {
+  getRequest
+} from '../api/network';
+import api from "../sdk/api"
 
 /**
- * 获取数据字典
+ * 获取所有数据字典
+ */
+const getAllDict = () => {
+  try {
+    const res = api.getRequest(api.AllDict)
+    if (res && res.data.code === 200) {
+      localStorage.setItem('dictList', {})
+      localStorage.setItem('dictList', JSON.stringify(res.data.data))
+    }
+  } catch (error) {
+    Message.error('获取字典数据异常！', error)
+  }
+}
+
+/**
+ * 根据id获取数据字典
  * @param {} id 
  * @returns 
  */
@@ -20,7 +39,7 @@ const getDistById = (id) => {
 
 
 /**
- * 获取数据字典
+ * 根据type获取数据字典
  * @param {} id 
  * @returns 
  */
@@ -78,6 +97,7 @@ const throttle = (fn, delay) => {
 }
 export default {
   getToken,
+  getAllDict,
   getDistById,
   getDistBytype,
   getUserInfo,

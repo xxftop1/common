@@ -1,6 +1,6 @@
 {
-  "name": "xxfCommon",
-  "version": "1.0.0",
+  "name": "xxfcommon",
+  "version": "1.0.1",
   "description": "公用包",
   "main": "./src/index.js",
   "homepage": "https://github.com/xxftop1/common/blob/master/README.md",

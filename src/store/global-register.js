@@ -66,13 +66,22 @@ function registerGlobalModule(store, props = {}, router = {}) {
               token
             }
             localStorage.setItem('COMMIN_USER', JSON.stringify(data))
-            localStorage.setItem('COMMIN_APP', JSON.stringify(permissionList))
+            if (!window.__POWERED_BY_QIANKUN__) {
+              //单独登录返回菜单
+              localStorage.setItem('COMMIN_MENU', JSON.stringify(permissionList))
+              commit('setMenu', data);
+              dispatch('setGlobalState')
+            } else {
+              //统一登录返回App
+              localStorage.setItem('COMMIN_APP', JSON.stringify(permissionList));
+              commit('setApp', permissionList);
+              dispatch('setGlobalState')
+            }
             setUserInfo(JSON.stringify(data), {
               path: '/',
               domain: window.location.hostname
             })
             commit('setUser', data);
-            commit('setApp', permissionList);
             dispatch('setGlobalState')
           }
           return Promise.resolve(res);
@@ -177,6 +186,8 @@ function registerGlobalModule(store, props = {}, router = {}) {
         setGlobalState(state, payload) {
           // eslint-disable-next-line
           state = Object.assign(state, payload);
+          debugger
+          console.log(state);
         },
         // 通知父应用
         emitGlobalState(state) {

@@ -58,9 +58,8 @@ export default {
     },
   },
   watch: {
-    currentTabId(v) {
-      // this.activeIndex = this.activeTab.path;
-      this.activeIndex = v;
+    activeTab(v) {
+      this.activeIndex = v.path;
       // if (v !== "" && v === this.activeTab.path) {
       //   this.activeIndex = v;
       // } else {
@@ -79,13 +78,6 @@ export default {
         return;
       }
       let toPath = null;
-      // if (path === "/") {
-      //   // 初始化
-      //   toPath = this.routes[0].children[0];
-      //   toPath.order = this.order;
-      //   this.order++;
-      //   this.addTab(toPath);
-      // } else
       if (to && path !== "/" && this.tabs.findIndex((ele) => ele.path === path) === -1) {
         toPath = Object.assign({}, meta);
         toPath.path = path;
@@ -102,7 +94,7 @@ export default {
           toPath.title = params.name;
         }
       }
-      this.currentTabId = toPath.path;
+      // this.currentTabId = toPath.path;
     },
     async handleRemove(id) {
       await this.removeTab(id);
@@ -110,7 +102,7 @@ export default {
     },
     handleClick(tab) {
       let currentTab = Object.assign({}, tab.labelContent());
-      this.currentTabId = currentTab.path;
+      // this.currentTabId = currentTab.path;
       this.setActiveTab(currentTab);
       this.toUrl(currentTab);
     },

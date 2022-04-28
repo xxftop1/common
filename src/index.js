@@ -13,7 +13,8 @@ import {
   MenuItemGroup,
   Link,
   Tabs,
-  TabPane
+  TabPane,
+  Message
 } from 'element-ui';
 
 Vue.prototype.$ELEMENT = {
@@ -27,6 +28,7 @@ Vue.use(MenuItemGroup);
 Vue.use(Link);
 Vue.use(Tabs);
 Vue.use(TabPane);
+Vue.use(Message);
 
 
 export {
