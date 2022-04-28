@@ -19,18 +19,16 @@ const {
 } = window.location;
 const prevUrl = protocol + "//" + hostname;
 if (pathname && pathname.includes('sub-user')) {
-  baseURL = prevUrl + '/user';
+  baseURL = prevUrl + '/userApi';
 } else if (pathname && pathname.includes('sub-csop')) {
-  baseURL = prevUrl + '/csop';
+  baseURL = prevUrl + '/csopApi';
 } else if (pathname && pathname.includes('sub-crm')) {
-  baseURL = prevUrl + '/crm';
-}else {
-  baseURL = prevUrl + '/user';
+  baseURL = prevUrl + '/crmApi';
 }
 let config = {
   // baseURL: process.env.baseURL || process.env.apiUrl || "http://10.10.10.132/api",
   baseURL: baseURL,
-  timeout: 60 * 1000, // Timeout
+  timeout: 60 * 1000,
   withCredentials: true, // Check cross-site Access-Control
 };
 const _axios = axios.create(config);

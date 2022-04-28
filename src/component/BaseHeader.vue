@@ -42,7 +42,6 @@ export default {
         if (!token) {
           return;
         }
-        // this.budgetForm.sid
         const res = await network.getRequest(api.Logout);
         if (res && res.data.code === 200) {
           sessionStorage.clear();

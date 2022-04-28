@@ -5,14 +5,17 @@ import {
 import {
   getRequest
 } from '../api/network';
-import api from "../sdk/api"
+import api from "../sdk/api";
+import {
+  Message
+} from "element-ui";
 
 /**
  * 获取所有数据字典
  */
-const getAllDict = () => {
+const getAllDict = async () => {
   try {
-    const res = api.getRequest(api.AllDict)
+    const res = await getRequest(api.AllDict)
     if (res && res.data.code === 200) {
       localStorage.setItem('dictList', {})
       localStorage.setItem('dictList', JSON.stringify(res.data.data))

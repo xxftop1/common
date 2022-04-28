@@ -128,7 +128,7 @@
 import network from "../../api/index.js";
 import api from "../../sdk/api.js";
 import { setUserInfo } from "../../sdk/cookie.js";
-
+import { mapState, mapActions } from "vuex";
 export default {
   props: {
     currentApp: String,
@@ -204,6 +204,7 @@ export default {
   mounted() {},
   computed: {},
   methods: {
+    ...mapActions("global", ["login"]),
     /**
      * 重置密码
      */
@@ -229,20 +230,23 @@ export default {
           params.currentApp = this.currentApp;
         }
         try {
-          const res = await network.postRequest(api.Login, params);
+          debugger;
+          const res = await this.login(params);
+          // const res = await network.postRequest(api.Login, params);
+          debugger
           if (res && res.data.code === 200) {
             this.submitStatus = false;
-            const { token, userInfo, permissionList } = res.data.data;
-            let data = {
-              ...userInfo,
-              token,
-            };
-            localStorage.setItem("COMMIN_USER", JSON.stringify(data));
-            localStorage.setItem("COMMIN_APP", JSON.stringify(permissionList));
-            setUserInfo(JSON.stringify(data), {
-              path: "/",
-              domain: window.location.hostname,
-            });
+            // const { token, userInfo, permissionList } = res.data.data;
+            // let data = {
+            //   ...userInfo,
+            //   token,
+            // };
+            // localStorage.setItem("COMMIN_USER", JSON.stringify(data));
+            // localStorage.setItem("COMMIN_APP", JSON.stringify(permissionList));
+            // setUserInfo(JSON.stringify(data), {
+            //   path: "/",
+            //   domain: window.location.hostname,
+            // });
             this.$emit("ok", res);
           } else {
             this.errorMsg = res.data.msg;

@@ -1,6 +1,6 @@
 export default {
-  Login: '/admin/login',
-  UserPermission: '/permission/getUserPermission',
-  Logout: '/admin/logout',
-  AllDict:'/sys/SysDict/getAllDict',
+  Login: '/common/login',
+  UserPermission: '/common/permission/getUserPermission',
+  Logout: '/common/logout',
+  AllDict: '/common/sys/SysDict/getAllDict',
 }
