@@ -24,6 +24,8 @@ if (pathname && pathname.includes('sub-user')) {
   baseURL = prevUrl + '/csopApi';
 } else if (pathname && pathname.includes('sub-crm')) {
   baseURL = prevUrl + '/crmApi';
+} else {
+  baseURL = prevUrl
 }
 let config = {
   // baseURL: process.env.baseURL || process.env.apiUrl || "http://10.10.10.132/api",

@@ -230,10 +230,8 @@ export default {
           params.currentApp = this.currentApp;
         }
         try {
-          debugger;
           const res = await this.login(params);
           // const res = await network.postRequest(api.Login, params);
-          debugger
           if (res && res.data.code === 200) {
             this.submitStatus = false;
             // const { token, userInfo, permissionList } = res.data.data;
