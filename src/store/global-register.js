@@ -66,7 +66,7 @@ function registerGlobalModule(store, props = {}, router = {}) {
               token
             }
             localStorage.setItem('COMMIN_USER', JSON.stringify(data))
-            if (!window.__POWERED_BY_QIANKUN__) {
+            if (params.currentApp) {
               //单独登录返回菜单
               localStorage.setItem('COMMIN_MENU', JSON.stringify(permissionList))
               commit('setMenu', data);
@@ -186,7 +186,7 @@ function registerGlobalModule(store, props = {}, router = {}) {
         setGlobalState(state, payload) {
           // eslint-disable-next-line
           state = Object.assign(state, payload);
-          
+
           console.log(state);
         },
         // 通知父应用
