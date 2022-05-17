@@ -78,7 +78,6 @@ export default {
     this.$router.push(this.activeMenu);
   },
   methods: {
-    ...mapActions("global", ["setActiveTab"]),
     targetIcon() {
       this.$emit("targetIcon");
     },

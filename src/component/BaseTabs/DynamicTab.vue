@@ -60,11 +60,6 @@ export default {
   watch: {
     activeTab(v) {
       this.activeIndex = v.path;
-      // if (v !== "" && v === this.activeTab.path) {
-      //   this.activeIndex = v;
-      // } else {
-      //   this.activeIndex = this.activeTab.path;
-      // }
     },
     $route(to, from) {
       this.handleTab(to);
@@ -94,7 +89,8 @@ export default {
           toPath.title = params.name;
         }
       }
-      // this.currentTabId = toPath.path;
+      //重新设置选中路由
+      this.setActiveTab(toPath);
     },
     async handleRemove(id) {
       await this.removeTab(id);
