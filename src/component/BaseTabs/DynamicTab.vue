@@ -102,7 +102,6 @@ export default {
     },
     handleClick(tab) {
       let currentTab = Object.assign({}, tab.labelContent());
-      // this.currentTabId = currentTab.path;
       this.setActiveTab(currentTab);
       this.toUrl(currentTab);
     },

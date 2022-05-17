@@ -156,6 +156,7 @@ function registerGlobalModule(store, props = {}, router = {}) {
         }, tab) {
           state.tabs.push(tab);
           commit('setActiveTab', tab);
+          document.title = tab.title;
           commit('setTabs', state.tabs);
           dispatch('setGlobalState')
         },

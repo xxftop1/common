@@ -63,6 +63,12 @@ export default {
     activeTab(v) {
       this.activeMenu = v.path;
     },
+    activeMenu(v) {
+      if (this.activeTab.path === v) {
+        return;
+      }
+      this.setActiveTab(v);
+    },
   },
   mounted() {
     if (this.pageUrl) {
@@ -72,6 +78,7 @@ export default {
     this.$router.push(this.activeMenu);
   },
   methods: {
+    ...mapActions("global", ["setActiveTab"]),
     targetIcon() {
       this.$emit("targetIcon");
     },
@@ -113,13 +120,18 @@ export default {
 .sidebar-box {
   width: 100%;
   height: 100%;
-  // height: calc(100% - 30px);
   overflow-x: hidden;
   overflow-y: auto;
   -ms-overflow-style: none;
   overflow: "-moz-scrollbars-none";
   scrollbar-width: none; /*  火狐   */
   box-shadow: 2px 0px 4px 0px #dce0ee;
+  .el-menu {
+    padding-bottom: 20px;
+    height: calc(100vh - 50px);
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
 }
 .sidebar-box::-webkit-scrollbar {
   display: none; /*  Chrome  */

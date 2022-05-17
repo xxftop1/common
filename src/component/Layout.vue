@@ -67,11 +67,12 @@ export default {
       flex-direction: column;
       height: calc(100vh - 50px);
       overflow: hidden;
+      background: #fff;
       .other-main {
-        height: calc(100% - 80px);
+        height: calc(100% - 65px);
         background: #ffffff;
         box-shadow: 4px 4px 6px 0px #dce0ee, -4px -4px 6px 0px #dce0ee;
-        margin: 20px;
+        margin: 15px;
         overflow: hidden;
       }
       .setting-main {
