@@ -86,7 +86,7 @@ export default {
 <style lang="scss">
 $--menu-height: 40px;
 .el-menu {
-  border: none;
+  border: none !important;
   height: 100%;
   background-color: #fff;
   .parent {

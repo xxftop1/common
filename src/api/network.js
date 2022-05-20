@@ -15,9 +15,11 @@ let baseURL = "";
 const {
   hostname,
   protocol,
-  pathname
+  pathname,
+  origin
 } = window.location;
-const prevUrl = protocol + "//" + hostname;
+// const prevUrl = protocol + "//" + hostname;
+const prevUrl = origin
 if (pathname && pathname.includes('sub-user')) {
   baseURL = prevUrl + '/userApi';
 } else if (pathname && pathname.includes('sub-csop')) {
@@ -28,7 +30,6 @@ if (pathname && pathname.includes('sub-user')) {
   baseURL = prevUrl
 }
 let config = {
-  // baseURL: process.env.baseURL || process.env.apiUrl || "http://10.10.10.132/api",
   baseURL: baseURL,
   timeout: 60 * 1000,
   withCredentials: true, // Check cross-site Access-Control

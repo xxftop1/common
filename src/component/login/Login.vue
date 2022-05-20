@@ -323,7 +323,6 @@ $--color-text-primary: #4d4d4d;
         border-radius: 37px;
         margin-top: 20px;
         height: 40px;
-        line-height: 40px;
         display: flex;
         justify-content: center;
         align-items: center;
