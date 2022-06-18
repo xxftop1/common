@@ -72,7 +72,7 @@ export default {
   //事件
   methods: {
     toBack() {
-      if (imgUrl) {
+      if (this.imgUrl) {
         return;
       }
       history.pushState(null, "/", "/");
@@ -82,7 +82,7 @@ export default {
      */
     async logout() {
       try {
-        if (imgUrl) {
+        if (this.imgUrl) {
           sessionStorage.clear();
           localStorage.clear();
           removeUserInfo();
@@ -133,9 +133,12 @@ export default {
       height: 26px;
       margin-right: 15px;
     }
+    i {
+      font-size: 22px;
+    }
     .icon-shezhi {
       margin-left: 15px;
-      margin-right: 15px;
+      // margin-right: 15px;
     }
   }
 }
