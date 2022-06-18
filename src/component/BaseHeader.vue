@@ -51,10 +51,10 @@ export default {
   data() {
     return {
       userInfo: {
-      nickName: "",
-      displayName: "",
-      phone: "",
-    },
+        nickName: "",
+        displayName: "",
+        phone: "",
+      },
     };
   },
   //生命周期 - 创建完成（访问当前this实例）
@@ -136,9 +136,72 @@ export default {
     i {
       font-size: 22px;
     }
+    .icon-tuichu {
+      margin-left: 15px;
+    }
     .icon-shezhi {
       margin-left: 15px;
       // margin-right: 15px;
+    }
+  }
+}
+.setting-box {
+  width: 100%;
+
+  &.setting-box--border {
+    border-bottom: 1px solid #f3f3f3;
+  }
+
+  tr {
+    &.business-config {
+      background-color: $--base-background;
+    }
+
+    th,
+    td {
+      padding: 10px 2px;
+      border-top: 1px solid #f3f3f3;
+    }
+
+    th {
+      color: #999;
+      font-size: 14px;
+      font-weight: normal;
+      line-height: 1;
+    }
+
+    td {
+      .el-radio--mini.is-bordered {
+        margin-right: 5px;
+
+        .el-radio__input {
+          display: none;
+        }
+
+        .el-radio__label {
+          padding-left: 3px;
+        }
+      }
+
+      &.user-operate {
+        width: 50%;
+        padding: 3px 0;
+        text-align: center;
+        border-top: none;
+
+        // &:first-child {
+        //   border-right: 1px solid #f1f1f1;
+        // }
+
+        > a {
+          color: $--color-black;
+          text-decoration: none;
+
+          &:hover {
+            color: $--color-primary;
+          }
+        }
+      }
     }
   }
 }
