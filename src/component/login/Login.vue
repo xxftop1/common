@@ -216,7 +216,6 @@ export default {
       const valid = await this.$refs.form.validate();
       if (valid) {
         this.submitStatus = true;
-
         if (this.errorMsg !== "") {
           this.errorMsg = "";
         }

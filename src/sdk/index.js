@@ -1,6 +1,7 @@
 import {
   getToken,
-  getUserInfo
+  getUserInfo,
+  setUserInfo
 } from './cookie';
 import {
   getRequest
@@ -104,6 +105,7 @@ export default {
   getDistById,
   getDistBytype,
   getUserInfo,
+  setUserInfo,
   debounce,
   throttle
 }

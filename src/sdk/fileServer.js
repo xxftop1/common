@@ -4,8 +4,8 @@ export default {
    * @param {blob对象} blob 
    */
   downloadFile(res, exportLoading) {
-    
-    let name = res.headers['Content-disposition'];
+
+    let name = res.headers['content-disposition'];
     let fileName = '';
     if (name && name.indexOf('filename') > -1) {
       fileName = decodeURI(name.split(';')[1].split('filename=')[1]);
@@ -19,7 +19,7 @@ export default {
       let link = document.createElement('a')
       link.style.display = 'none'
       link.href = url
-      link.setAttribute('download', '20220402.xlsx');
+      link.setAttribute('download', fileName);
       document.body.appendChild(link)
       link.click();
       URL.revokeObjectURL(link.href) // 释放url

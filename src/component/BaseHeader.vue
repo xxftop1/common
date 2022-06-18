@@ -2,12 +2,33 @@
 <template>
   <div class="height-fill width-fill base-header">
     <p class="base-header__logo" @click="toBack">
-      <img src="../assets/img/xiaohua.png" alt="" />
+      <img :src="imgUrl ? imgUrl : '../assets/img/xiaohua.png'" alt="" />
     </p>
     <div class="base-header__oper">
-      <img src="../assets/img/touxiang1.png" alt="" />
+      <el-popover title="个人资料" width="200" trigger="click" :open-delay="100">
+        <table
+          class="setting-box setting-box--border"
+          cellspacing="0"
+          cellpadding="0"
+          border="0"
+        >
+          <tr>
+            <th width="60">用户名</th>
+            <td class="text-right mr-5">
+              {{ userInfo.nickName | userInfo.displayName }}
+            </td>
+          </tr>
+          <tr>
+            <th width="60">手机号</th>
+            <td class="text-right mr-5">{{ userInfo.phone }}</td>
+          </tr>
+        </table>
+        <div slot="reference">
+          <img src="../assets/img/touxiang1.png" alt="" />
+        </div>
+      </el-popover>
       <span>|</span>
-      <i class="iconfont icon-shezhi"></i>
+      <!-- <i class="iconfont icon-shezhi"></i> -->
       <span @click="logout">
         <i class="iconfont icon-tuichu"></i>
       </span>
@@ -16,21 +37,44 @@
 </template>
 
 <script>
-import { removeUserInfo, getToken } from "../sdk/cookie";
+import { removeUserInfo, getToken, getUserInfo } from "../sdk/cookie";
 import network from "../api/index.js";
 import api from "../sdk/api.js";
 export default {
   name: "",
+  props: {
+    imgUrl: {
+      type: String,
+      default: "",
+    },
+  },
   data() {
-    return {};
+    return {
+      userInfo: {
+      nickName: "",
+      displayName: "",
+      phone: "",
+    },
+    };
   },
   //生命周期 - 创建完成（访问当前this实例）
   created() {},
   //生命周期 - 挂载完成（访问DOM元素）
-  mounted() {},
+  mounted() {
+    const { nickName, displayName, phone } = getUserInfo();
+    this.userInfo = {
+      nickName,
+      displayName,
+      phone,
+    };
+  },
+  computed: {},
   //事件
   methods: {
     toBack() {
+      if (imgUrl) {
+        return;
+      }
       history.pushState(null, "/", "/");
     },
     /**
@@ -38,6 +82,13 @@ export default {
      */
     async logout() {
       try {
+        if (imgUrl) {
+          sessionStorage.clear();
+          localStorage.clear();
+          removeUserInfo();
+          this.$router.push("/login");
+          return;
+        }
         const token = getToken();
         if (!token) {
           return;

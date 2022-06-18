@@ -26,6 +26,8 @@ if (pathname && pathname.includes('sub-user')) {
   baseURL = prevUrl + '/csopApi';
 } else if (pathname && pathname.includes('sub-crm')) {
   baseURL = prevUrl + '/crmApi';
+} else if (pathname && pathname.includes('sub-book')) {
+  baseURL = prevUrl + '/crmApi';
 } else {
   baseURL = prevUrl
 }
