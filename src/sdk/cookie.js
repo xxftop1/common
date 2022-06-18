@@ -1,5 +1,5 @@
 import Cookie from 'js-cookie';
-const keys = "COMMIN_USER"
+const keys = process.env.VUE_APP_KEYS ? process.env.VUE_APP_KEYS : "COMMON_USER"
 let serve = window.location.hostname;
 export const getToken = () => {
   if (Cookie.get(keys)) {
