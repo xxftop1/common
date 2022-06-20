@@ -79,7 +79,7 @@ export default {
       margin: 5px;
       margin-bottom: 0;
       .other-main {
-        height: calc(100% - 120px);
+        height: calc(100% - 75px);
         background: #ffffff;
         box-shadow: 4px 4px 6px 0px #dce0ee, -4px -4px 6px 0px #dce0ee;
         margin: 10px;
