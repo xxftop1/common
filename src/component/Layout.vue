@@ -71,13 +71,14 @@ export default {
       flex: 1;
       display: flex;
       flex-direction: column;
-      height: calc(100vh - 70px);
+      // height: calc(100vh - 70px);
+      height: 100%;
       overflow: hidden;
       background: #fff;
       margin: 5px;
       margin-bottom: 0;
       .other-main {
-        height: calc(100% - 65px);
+        height: calc(100% - 75px);
         background: #ffffff;
         box-shadow: 4px 4px 6px 0px #dce0ee, -4px -4px 6px 0px #dce0ee;
         margin: 10px;
@@ -90,6 +91,7 @@ export default {
       }
       &__footer {
         height: 40px;
+        margin-left:-5px;
       }
     }
   }
