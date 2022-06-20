@@ -67,22 +67,24 @@ export default {
     display: flex;
     background: #fff;
     padding-top: 1px;
+    height: 100%;
+    overflow: hidden;
     .main-box {
       flex: 1;
       display: flex;
       flex-direction: column;
-      // height: calc(100vh - 70px);
       height: 100%;
       overflow: hidden;
       background: #fff;
       margin: 5px;
       margin-bottom: 0;
       .other-main {
-        height: calc(100% - 75px);
+        height: calc(100% - 120px);
         background: #ffffff;
         box-shadow: 4px 4px 6px 0px #dce0ee, -4px -4px 6px 0px #dce0ee;
         margin: 10px;
         overflow: hidden;
+        margin-bottom: 0;
       }
       .setting-main {
         height: calc(100% - 40px);
@@ -91,7 +93,7 @@ export default {
       }
       &__footer {
         height: 40px;
-        margin-left:-5px;
+        margin-left: -5px;
       }
     }
   }
