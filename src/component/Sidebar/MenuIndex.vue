@@ -89,11 +89,12 @@ export default {
 .sidebar {
   width: 100%;
   height: 100%;
+  position: relative;
+  z-index: 5;
 }
 .sidebar-title {
   width: 100%;
   height: 50px;
-  // border-bottom: 1px solid #dcdfe6;
   color: #ffffff;
   box-sizing: border-box;
   text-align: center;
@@ -117,6 +118,7 @@ export default {
   margin-left: 10px;
 }
 .sidebar-box {
+  padding-top: 3px;
   width: 100%;
   height: 100%;
   overflow-x: hidden;

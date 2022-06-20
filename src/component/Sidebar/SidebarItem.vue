@@ -90,8 +90,6 @@ $--menu-height: 40px;
   height: 100%;
   background-color: #fff;
   .parent {
-    // box-shadow: 0px 1px 0px 0px rgba(187, 187, 187, 0.5);
-    // margin-right: 15px;
     margin-left: 1px;
     .el-submenu {
       &__title {

@@ -39,8 +39,8 @@ export default {
     },
     imgUrl: {
       type: String,
-      default:''
-    }
+      default: "",
+    },
   },
   data() {
     return {};
@@ -65,18 +65,22 @@ export default {
   .main {
     flex: 1;
     display: flex;
+    background: #fff;
+    padding-top: 1px;
     .main-box {
       flex: 1;
       display: flex;
       flex-direction: column;
-      height: calc(100vh - 50px);
+      height: calc(100vh - 70px);
       overflow: hidden;
       background: #fff;
+      margin: 5px;
+      margin-bottom: 0;
       .other-main {
         height: calc(100% - 65px);
         background: #ffffff;
         box-shadow: 4px 4px 6px 0px #dce0ee, -4px -4px 6px 0px #dce0ee;
-        margin: 15px;
+        margin: 10px;
         overflow: hidden;
       }
       .setting-main {
