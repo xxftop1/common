@@ -18,19 +18,36 @@ const {
   pathname,
   origin
 } = window.location;
-// const prevUrl = protocol + "//" + hostname;
-const prevUrl = origin
-if (pathname && pathname.includes('sub-user')) {
-  baseURL = prevUrl + '/userApi';
-} else if (pathname && pathname.includes('sub-csop')) {
-  baseURL = prevUrl + '/csopApi';
-} else if (pathname && pathname.includes('sub-crm')) {
-  baseURL = prevUrl + '/crmApi';
-} else if (pathname && pathname.includes('sub-book')) {
-  baseURL = prevUrl + '/crmApi';
-} else {
-  baseURL = prevUrl
-}
+const prevUrl = process.env.NODE_ENV === 'development' ? protocol + "//" + hostname : origin
+const apiArr = [{
+    appPath: 'sub-user',
+    baseUrl: prevUrl + '/userApi'
+  },
+  {
+    appPath: 'sub-csop',
+    baseUrl: prevUrl + '/csopApi'
+  },
+  {
+    appPath: 'sub-crm',
+    baseUrl: prevUrl + '/crmApi'
+  },
+  {
+    appPath: 'sub-receipt',
+    baseUrl: prevUrl + '/csopApi'
+  },
+  {
+    appPath: 'sub-book',
+    baseUrl: prevUrl + '/csopApi'
+  },
+]
+apiArr.forEach(ele => {
+  const name = ele.appPath;
+  if (pathname && pathname.includes(name)) {
+    baseURL = ele.baseUrl;
+  } else {
+    baseURL = prevUrl
+  }
+})
 let config = {
   baseURL: baseURL,
   timeout: 60 * 1000,

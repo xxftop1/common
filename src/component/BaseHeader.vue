@@ -2,7 +2,7 @@
 <template>
   <div class="height-fill width-fill base-header">
     <p class="base-header__logo" @click="toBack">
-      <img :src="imgUrl ? imgUrl : '../assets/img/xiaohua.png'" alt="" />
+      <img :src="imgUrl ? imgUrl : baseImgUrl" alt="" />
     </p>
     <div class="base-header__oper">
       <el-popover title="个人资料" width="200" trigger="click" :open-delay="100">
@@ -55,6 +55,7 @@ export default {
         displayName: "",
         phone: "",
       },
+      baseImgUrl: "",
     };
   },
   //生命周期 - 创建完成（访问当前this实例）
@@ -67,6 +68,9 @@ export default {
       displayName,
       phone,
     };
+    if (!this.imgUrl) {
+      this.baseImgUrl = require("../assets/img/xiaohua.png");
+    }
   },
   computed: {},
   //事件
