@@ -42,7 +42,7 @@ const apiArr = [{
 ]
 let requestObj = apiArr.find(ele => pathname.includes(ele.appPath));
 if (requestObj) {
-  baseURL += requestObj.baseUrl;
+  baseURL = requestObj.baseUrl;
 }
 let config = {
   baseURL: baseURL,
