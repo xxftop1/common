@@ -13,10 +13,9 @@
     <!-- <span>{{ routes }}</span> -->
     <div class="sidebar-box">
       <el-menu
-        :default-openeds="defaultOpeneds"
         :default-active="activeMenu"
         text-color="#4d4d4d"
-        :unique-opened="false"
+        unique-opened
         active-text-color="#6b7db3"
         :collapse-transition="false"
         mode="vertical"
@@ -51,7 +50,7 @@ export default {
   },
   data() {
     return {
-      defaultOpeneds: this.routes.map((ele) => ele.id + ""),
+      // defaultOpeneds: this.routes.map((ele) => ele.id + ""),
       activeMenu: this.routes[0].children[0].uri,
     };
   },
