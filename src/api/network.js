@@ -11,7 +11,6 @@ import fileServer from '../sdk/fileServer';
 
 // const isProd = ["quickTest", "production", "stage"].indexOf(process.env.NODE_ENV) > -1;
 // let baseURL = isProd ? process.env.VUE_APP_SERVICE : "/api";
-let baseURL = "";
 const {
   hostname,
   protocol,
@@ -19,6 +18,7 @@ const {
   origin
 } = window.location;
 const prevUrl = process.env.NODE_ENV === 'development' ? protocol + "//" + hostname : origin
+let baseURL = prevUrl;
 const apiArr = [{
     appPath: 'sub-user',
     baseUrl: prevUrl + '/userApi'
@@ -40,14 +40,10 @@ const apiArr = [{
     baseUrl: prevUrl + '/csopApi'
   },
 ]
-apiArr.forEach(ele => {
-  const name = ele.appPath;
-  if (pathname && pathname.includes(name)) {
-    baseURL = ele.baseUrl;
-  } else {
-    baseURL = prevUrl
-  }
-})
+let requestObj = apiArr.find(ele => pathname.includes(ele.appPath));
+if (requestObj) {
+  baseURL += requestObj.baseUrl;
+}
 let config = {
   baseURL: baseURL,
   timeout: 60 * 1000,
