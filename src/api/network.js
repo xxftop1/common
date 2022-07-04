@@ -9,40 +9,38 @@ import {
 } from "../sdk/cookie.js"
 import fileServer from '../sdk/fileServer';
 
-// const isProd = ["quickTest", "production", "stage"].indexOf(process.env.NODE_ENV) > -1;
-// let baseURL = isProd ? process.env.VUE_APP_SERVICE : "/api";
 const {
   hostname,
   protocol,
   pathname,
   origin
 } = window.location;
-const prevUrl = process.env.NODE_ENV === 'development' ? protocol + "//" + hostname : origin
-let baseURL = prevUrl;
+let baseURL = origin;
 const apiArr = [{
     appPath: 'sub-user',
-    baseUrl: prevUrl + '/userApi'
+    baseUrl: '/userApi'
   },
   {
     appPath: 'sub-csop',
-    baseUrl: prevUrl + '/csopApi'
+    baseUrl: '/csopApi'
   },
   {
     appPath: 'sub-crm',
-    baseUrl: prevUrl + '/crmApi'
+    baseUrl: '/crmApi'
   },
   {
     appPath: 'sub-receipt',
-    baseUrl: prevUrl + '/csopApi'
+    baseUrl: '/csopApi'
   },
   {
     appPath: 'sub-book',
-    baseUrl: prevUrl + '/csopApi'
+    baseUrl: '/csopApi'
   },
 ]
 let requestObj = apiArr.find(ele => pathname.includes(ele.appPath));
 if (requestObj) {
-  baseURL = requestObj.baseUrl;
+  const prevUrl = process.env.NODE_ENV === 'development' ? protocol + "//" + hostname : origin
+  baseURL = prevUrl + requestObj.baseUrl;
 }
 let config = {
   baseURL: baseURL,

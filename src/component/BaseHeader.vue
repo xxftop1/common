@@ -15,12 +15,20 @@
           <tr>
             <th width="60">用户名</th>
             <td class="text-right mr-5">
-              {{ userInfo.nickName | userInfo.displayName }}
+              {{ userInfo.nickName || userInfo.displayName }}
             </td>
           </tr>
           <tr>
             <th width="60">手机号</th>
             <td class="text-right mr-5">{{ userInfo.phone }}</td>
+          </tr>
+        </table>
+        <table class="setting-box mt-5">
+          <tr>
+            <td class="user-operate">
+              <a href="javascript:;" @click="modifyPassword = true">修改密码</a>
+            </td>
+            <slot name="otherOper"></slot>
           </tr>
         </table>
         <div slot="reference">
@@ -33,6 +41,45 @@
         <i class="iconfont icon-tuichu"></i>
       </span>
     </div>
+    <el-dialog
+      title="修改密码"
+      width="430px"
+      :visible.sync="modifyPassword"
+      append-to-body
+      close-on-click-modal
+      close-on-press-escape
+    >
+      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+        <el-form-item label="原密码" prop="password" :error="errors.oldPassword">
+          <el-input
+            type="password"
+            v-model="form.password"
+            auto-complete="off"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="新密码" prop="newPassword" :error="errors.newPassword">
+          <el-input
+            type="password"
+            v-model="form.newPassword"
+            auto-complete="off"
+          ></el-input>
+        </el-form-item>
+        <el-form-item
+          label="确认密码"
+          prop="renewPassword"
+          :error="errors.confirmPassword"
+        >
+          <el-input
+            type="password"
+            v-model="form.renewPassword"
+            auto-complete="off"
+          ></el-input>
+        </el-form-item>
+        <el-row class="text-center">
+          <el-button type="primary" @click="handleModifyUserPassword">确定</el-button>
+        </el-row>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 
@@ -47,8 +94,47 @@ export default {
       type: String,
       default: "",
     },
+    //修改密码接口
+    apiUrl: {
+      type: String,
+      default: "",
+    },
+    //密码正则
+    passwordPattern: {
+      type: String,
+      default: "",
+    },
   },
   data() {
+    const validator = (rule, value, callback) => {
+      let test = this.passwordPattern
+        ? this.passwordPattern
+        : /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,20}$/;
+      if (value === "") {
+        callback(new Error("请输入密码"));
+      } else if (!test.test(value)) {
+        callback(new Error("密码长度为8-20位，必须包括字母、数字"));
+      } else {
+        if (this.form.renewPassword !== "") {
+          this.$refs.form.validateField("renewPassword");
+        }
+        callback();
+      }
+    };
+    const validatePass2 = (rule, value, callback) => {
+      let test = this.passwordPattern
+        ? this.passwordPattern
+        : /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,20}$/;
+      if (value === "") {
+        callback(new Error("请再次输入密码"));
+      } else if (!test.test(value)) {
+        callback(new Error("密码长度为8-20位，必须包括字母、数字"));
+      } else if (value !== this.form.newPassword) {
+        callback(new Error("两次输入密码不一致!"));
+      } else {
+        callback();
+      }
+    };
     return {
       userInfo: {
         nickName: "",
@@ -56,6 +142,22 @@ export default {
         phone: "",
       },
       baseImgUrl: "",
+      modifyPassword: false,
+      form: {
+        password: "",
+        newPassword: "",
+        renewPassword: "",
+      },
+      rules: {
+        password: [{ trigger: "blur", required: true, message: "请输入密码" }],
+        newPassword: [{ validator: validator, trigger: "blur", required: true }],
+        renewPassword: [{ validator: validatePass2, trigger: "blur", required: true }],
+      },
+      errors: {
+        oldPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+      },
     };
   },
   //生命周期 - 创建完成（访问当前this实例）
@@ -80,6 +182,42 @@ export default {
         return;
       }
       history.pushState(null, "/", "/");
+    },
+    /**
+     * 修改密码
+     */
+    handleModifyUserPassword() {
+      const $form = this.$refs.form;
+      $form.validate((valid) => {
+        if (valid) {
+          const { password, newPassword, renewPassword } = this.form;
+          if (password === newPassword) {
+            this.errors.newPassword = "请设置一个新的密码!";
+            return;
+          }
+          if (newPassword !== renewPassword) {
+            this.errors.confirmPassword = "两次输入的密码不一致!";
+            return;
+          }
+          if (!this.apiUrl) {
+            this.$message.warning("请确认请求接口有值！");
+            return;
+          }
+          this.getRequest(
+            this.apiUrl +
+              `?password=${password}&renewPassword=${renewPassword}&newPassword=${newPassword}`
+          ).then((res) => {
+            if (res && res.data.code === 200) {
+              this.$message.success("恭喜您，密码修改成功!");
+              this.modifyPassword = false;
+              $form.resetFields();
+              $form.clearValidate();
+            } else {
+              return;
+            }
+          });
+        }
+      });
     },
     /**
      * 登出
