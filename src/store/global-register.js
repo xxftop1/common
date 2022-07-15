@@ -187,8 +187,6 @@ function registerGlobalModule(store, props = {}, router = {}) {
         setGlobalState(state, payload) {
           // eslint-disable-next-line
           state = Object.assign(state, payload);
-
-          console.log(state);
         },
         // 通知父应用
         emitGlobalState(state) {

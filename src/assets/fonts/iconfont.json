@@ -6,6 +6,62 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "13604664",
+      "name": "警告",
+      "font_class": "warning",
+      "unicode": "e680",
+      "unicode_decimal": 59008
+    },
+    {
+      "icon_id": "14362066",
+      "name": "提示",
+      "font_class": "info",
+      "unicode": "e681",
+      "unicode_decimal": 59009
+    },
+    {
+      "icon_id": "4686545",
+      "name": "刷新",
+      "font_class": "shuaxin",
+      "unicode": "ec08",
+      "unicode_decimal": 60424
+    },
+    {
+      "icon_id": "4880430",
+      "name": "排序",
+      "font_class": "paixu",
+      "unicode": "e62c",
+      "unicode_decimal": 58924
+    },
+    {
+      "icon_id": "30348971",
+      "name": "付款",
+      "font_class": "fukuan",
+      "unicode": "e62a",
+      "unicode_decimal": 58922
+    },
+    {
+      "icon_id": "30348972",
+      "name": "退款",
+      "font_class": "tuikuan",
+      "unicode": "e62b",
+      "unicode_decimal": 58923
+    },
+    {
+      "icon_id": "30020741",
+      "name": "部门管理",
+      "font_class": "bumenguanli",
+      "unicode": "e629",
+      "unicode_decimal": 58921
+    },
+    {
+      "icon_id": "29692507",
+      "name": "筛选",
+      "font_class": "shaixuan1",
+      "unicode": "e610",
+      "unicode_decimal": 58896
+    },
+    {
       "icon_id": "1727266",
       "name": "05采购-线性",
       "font_class": "caigou",
@@ -179,13 +235,6 @@
       "font_class": "fasongyouxiang1",
       "unicode": "e60e",
       "unicode_decimal": 58894
-    },
-    {
-      "icon_id": "28214050",
-      "name": "查看",
-      "font_class": "chakan1",
-      "unicode": "e610",
-      "unicode_decimal": 58896
     },
     {
       "icon_id": "28214451",
