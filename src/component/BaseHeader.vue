@@ -199,6 +199,7 @@ export default {
             this.errors.confirmPassword = "两次输入的密码不一致!";
             return;
           }
+          debugger
           if (!this.apiUrl) {
             this.$message.warning("请确认请求接口有值！");
             return;
