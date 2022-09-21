@@ -199,7 +199,6 @@ export default {
             this.errors.confirmPassword = "两次输入的密码不一致!";
             return;
           }
-          debugger
           if (!this.apiUrl) {
             this.$message.warning("请确认请求接口有值！");
             return;
@@ -226,8 +225,16 @@ export default {
     async logout() {
       try {
         if (this.imgUrl) {
-          sessionStorage.clear();
-          localStorage.clear();
+          Object.keys(sessionStorage).forEach((key) => {
+            if (key.includes(process.env.VUE_APP_KEYS)) {
+              sessionStorage.removeItem(key);
+            }
+          });
+          Object.keys(localStorage).forEach((key) => {
+            if (key.includes(process.env.VUE_APP_KEYS)) {
+              localStorage.removeItem(key);
+            }
+          });
           removeUserInfo();
           this.$router.push("/login");
           return;
@@ -238,8 +245,16 @@ export default {
         }
         const res = await network.getRequest(api.Logout);
         if (res && res.data.code === 200) {
-          sessionStorage.clear();
-          localStorage.clear();
+          Object.keys(sessionStorage).forEach((key) => {
+            if (key.includes(process.env.VUE_APP_KEYS)) {
+              sessionStorage.removeItem(key);
+            }
+          });
+          Object.keys(localStorage).forEach((key) => {
+            if (key.includes(process.env.VUE_APP_KEYS)) {
+              localStorage.removeItem(key);
+            }
+          });
           removeUserInfo();
           if (!window.__POWERED_BY_QIANKUN__) {
             this.$router.push("/login");
