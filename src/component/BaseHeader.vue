@@ -224,8 +224,8 @@ export default {
      */
     async logout() {
       try {
+        const prev = process.env.VUE_APP_KEYS ? process.env.VUE_APP_KEYS : "COMMON";
         if (this.imgUrl) {
-          const prev = process.env.VUE_APP_KEYS ? process.env.VUE_APP_KEYS : "COMMON";
           Object.keys(sessionStorage).forEach((key) => {
             if (key.includes(prev)) {
               sessionStorage.removeItem(key);
