@@ -4,10 +4,9 @@ export default {
    * @param {blob对象} blob 
    */
   downloadFile(res, exportLoading) {
-
     let name = res.headers['content-disposition'];
     if (!name) {
-      name =res.headers['Content-disposition'];
+      name = res.headers['Content-disposition'];
     }
     let fileName = '';
     if (name && name.indexOf('filename') > -1) {

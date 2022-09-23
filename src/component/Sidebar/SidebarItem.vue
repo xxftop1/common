@@ -11,6 +11,7 @@
         :underline="false"
       >
         <el-menu-item :index="resolvePath(onlyOneChild.uri)" :title="onlyOneChild.name">
+          <!-- <el-menu-item :index="onlyOneChild.id" :title="onlyOneChild.name"> -->
           <item
             :icon="onlyOneChild.icon || (item && item.icon)"
             :title="onlyOneChild.name"

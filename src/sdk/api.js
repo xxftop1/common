@@ -3,4 +3,5 @@ export default {
   UserPermission: '/common/permission/getUserPermission',
   Logout: '/common/logout',
   AllDict: '/common/sys/SysDict/getAllDict',
+  MenuButton:'/common/permission/getMenuButton',
 }

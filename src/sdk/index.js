@@ -18,8 +18,8 @@ const getAllDict = async () => {
   try {
     const res = await getRequest(api.AllDict)
     if (res && res.data.code === 200) {
-      localStorage.setItem('dictList', {})
-      localStorage.setItem('dictList', JSON.stringify(res.data.data))
+      localStorage.setItem('COMMON-dictList', {})
+      localStorage.setItem('COMMON-dictList', JSON.stringify(res.data.data))
     }
   } catch (error) {
     Message.error('获取字典数据异常！', error)
@@ -32,7 +32,7 @@ const getAllDict = async () => {
  * @returns 
  */
 const getDistById = (id) => {
-  let dictList = localStorage.getItem("dictList");
+  let dictList = localStorage.getItem("COMMON-dictList");
   if (dictList) {
     let dictAll = JSON.parse(dictList);
     let child = dictAll.find(ele => ele.dictId === id)
@@ -42,13 +42,37 @@ const getDistById = (id) => {
 };
 
 
+const getMenuBtn = async () => {
+  try {
+    const menuId = sessionStorage.getItem("COMMIN_MENU_ID");
+    if (!menuId) {
+      return Promise.resolve(true);
+    }
+    const res = await getRequest(api.MenuButton + `?id=${menuId}`);
+    if (res && res.data.code === 200) {
+      const data = res.data.data;
+      if (data && data.length > 0) {
+        let current = {
+          [menuId]: data,
+        }
+        sessionStorage.setItem("COMMIN_MENU_ID", menuId);
+        sessionStorage.setItem('COMMIN_MENU_BTN', JSON.stringify(current));
+      }
+    }
+    return Promise.resolve(true);
+  } catch (error) {
+    Message.error('获取当前菜单的按钮权限异常！', error)
+    return Promise.resolve(false);
+  }
+};
+
 /**
  * 根据type获取数据字典
  * @param {} id 
  * @returns 
  */
 const getDistBytype = (type) => {
-  let dictList = localStorage.getItem("dictList");
+  let dictList = localStorage.getItem("COMMON-dictList");
   if (dictList) {
     let dictAll = JSON.parse(dictList);
     let child = dictAll.find(ele => ele.dictType === type)
@@ -107,5 +131,6 @@ export default {
   getUserInfo,
   setUserInfo,
   debounce,
-  throttle
+  throttle,
+  getMenuBtn
 }

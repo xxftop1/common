@@ -9,8 +9,7 @@
         :class="[targetIcon ? 'iconfont icon-shouqi-copy' : 'iconfont icon-zhankai']"
         class="sidebar-fold"
       ></i>
-    </div> -->
-    <!-- <span>{{ routes }}</span> -->
+    </div> @select="menuSelect" -->
     <div class="sidebar-box">
       <el-menu
         :default-active="activeMenu"
@@ -35,7 +34,7 @@
 
 <script>
 import SidebarItem from "./SidebarItem";
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 export default {
   components: { SidebarItem },
   props: {
@@ -50,8 +49,8 @@ export default {
   },
   data() {
     return {
-      // defaultOpeneds: this.routes.map((ele) => ele.id + ""),
-      activeMenu: this.routes[0].children[0].uri,
+      activeMenu: "",
+      childData: [],
     };
   },
   computed: {
@@ -59,24 +58,51 @@ export default {
     ...mapState(["pageUrl"]),
   },
   watch: {
+    /**
+     * 路由变化,自动匹配菜单
+     */
     activeTab(v) {
       this.activeMenu = v.path;
     },
+    /**
+     * 切换菜单后。底部tab同步切换
+     */
     activeMenu(v) {
+      const obj = this.childData.find((ele) => ele.uri === v);
+      const activeMenuId = obj ? obj.id : "";
+      sessionStorage.setItem("COMMIN_MENU_ID", activeMenuId);
       if (this.activeTab.path === v) {
         return;
       }
       this.setActiveTab(v);
     },
   },
-  mounted() {
+  async mounted() {
+    /**
+     * 由于底部tab跟菜单是根据路由地址匹配，导致拿不到菜单的id
+     * 只能根据路由地址再去匹配菜单id
+     */
+    this.childData = this.routes.reduce((prev, curr) => {
+      if (curr.children && curr.children.length > 0) {
+        const data = [...prev, ...curr.children];
+        return data;
+      }
+      return prev;
+    }, []);
+    let activePath = "";
     if (this.pageUrl) {
-      this.$router.push(this.pageUrl);
-      return;
+      activePath = this.pageUrl;
+    } else {
+      activePath = this.childData[0].uri;
     }
+    const obj = this.childData.find((ele) => ele.uri === activePath);
+    const activeMenuId = obj ? obj.id : "";
+    sessionStorage.setItem("COMMIN_MENU_ID", activeMenuId);
+    this.activeMenu = activePath;
     this.$router.push(this.activeMenu);
   },
   methods: {
+    ...mapActions("global", ["getMenuBtn"]),
     targetIcon() {
       this.$emit("targetIcon");
     },

@@ -4,6 +4,7 @@ import api from './api'
 import Layout from './component/Layout.vue';
 import Login from './component/login/Login.vue';
 import "./assets/fonts/iconfont.css"
+import has from './sdk/btnPermiss';
 
 import Vue from 'vue';
 import {
@@ -34,5 +35,6 @@ export {
   sdk,
   api,
   Layout,
-  Login
+  Login,
+  has
 }

@@ -26,7 +26,8 @@ function registerGlobalModule(store, props = {}, router = {}) {
     app: [], //子应用
     user: {},
     tabs: [], //底部菜单栏
-    activeTab: {} //激活tab
+    activeTab: {}, //激活tab,
+    menuBtn: [], //菜单的按钮权限
   };
 
   // 将父应用的数据存储到子应用中，命名空间固定为global
@@ -49,6 +50,34 @@ function registerGlobalModule(store, props = {}, router = {}) {
           commit('setGlobalState', payload);
         },
 
+        //获取当前选中菜单的权限
+        async getMenuBtn({
+          commit,
+          dispatch
+        }, menuId) {
+          try {
+            sessionStorage.removeItem('COMMIN_MENU_ID');
+            sessionStorage.removeItem('COMMIN_MENU_BTN');
+            if (!menuId) return;
+            const res = await getRequest(api.MenuButton + `?id=${menuId}`);
+            if (res && res.data.code === 200) {
+              const data = res.data.data;
+              if (data && data.length > 0) {
+                let current = {
+                  [menuId]: data,
+                }
+                commit('setMenuBtn', current);
+                dispatch('setGlobalState');
+                sessionStorage.setItem('COMMIN_MENU_ID', menuId);
+                sessionStorage.setItem('COMMIN_MENU_BTN', JSON.stringify(current));
+              }
+            }
+            return Promise.resolve(true);
+          } catch (error) {
+            return Promise.reject();
+          }
+        },
+
         // 登录
         async login({
           commit,
@@ -65,15 +94,15 @@ function registerGlobalModule(store, props = {}, router = {}) {
               ...userInfo,
               token
             }
-            localStorage.setItem('COMMIN_USER', JSON.stringify(data))
+            localStorage.setItem('COMMON-USER', JSON.stringify(data))
             if (params.currentApp) {
               //单独登录返回菜单
-              localStorage.setItem('COMMIN_MENU', JSON.stringify(permissionList))
+              localStorage.setItem('COMMON-MENU', JSON.stringify(permissionList))
               commit('setMenu', data);
               dispatch('setGlobalState')
             } else {
               //统一登录返回App
-              localStorage.setItem('COMMIN_APP', JSON.stringify(permissionList));
+              localStorage.setItem('COMMON_APP', JSON.stringify(permissionList));
               commit('setApp', permissionList);
               dispatch('setGlobalState')
             }
@@ -102,7 +131,7 @@ function registerGlobalModule(store, props = {}, router = {}) {
             data
           } = res.data;
           if (res && code === 200) {
-            localStorage.setItem('COMMIN_MENU', JSON.stringify(data))
+            localStorage.setItem('COMMON-MENU', JSON.stringify(data))
             commit('setMenu', data);
             dispatch('setGlobalState')
           }
@@ -208,6 +237,9 @@ function registerGlobalModule(store, props = {}, router = {}) {
         },
         setActiveTab(state, data) {
           state.activeTab = data || {};
+        },
+        setMenuBtn(state, data) {
+          state.menuBtn = data || [];
         }
       },
     };
