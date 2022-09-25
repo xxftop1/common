@@ -7,8 +7,9 @@ const has = {
       // 当被绑定的元素插入到 DOM 中时…
       inserted(ele, bindings) {
         let hasPemission = false;
-        const menuId = sessionStorage.getItem('COMMIN_MENU_ID');
-        const BtnData = JSON.parse(sessionStorage.getItem('COMMIN_MENU_BTN'));
+        const prev = process.env.VUE_APP_KEYS ? process.env.VUE_APP_KEYS : "COMMON";
+        const menuId = sessionStorage.getItem(prev + '-MENU-ID');
+        const BtnData = JSON.parse(sessionStorage.getItem(prev + '-MENU-BTN'));
         if (menuId && BtnData) {
           let permissions = []
           permissions = BtnData[menuId].map(ele => ele.component);

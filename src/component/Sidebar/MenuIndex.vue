@@ -70,7 +70,8 @@ export default {
     activeMenu(v) {
       const obj = this.childData.find((ele) => ele.uri === v);
       const activeMenuId = obj ? obj.id : "";
-      sessionStorage.setItem("COMMIN_MENU_ID", activeMenuId);
+      const prev = process.env.VUE_APP_KEYS ? process.env.VUE_APP_KEYS : "COMMON";
+      sessionStorage.setItem(prev + "-MENU-ID", activeMenuId);
       if (this.activeTab.path === v) {
         return;
       }
@@ -97,7 +98,8 @@ export default {
     }
     const obj = this.childData.find((ele) => ele.uri === activePath);
     const activeMenuId = obj ? obj.id : "";
-    sessionStorage.setItem("COMMIN_MENU_ID", activeMenuId);
+    const prev = process.env.VUE_APP_KEYS ? process.env.VUE_APP_KEYS : "COMMON";
+    sessionStorage.setItem(prev + "-MENU-ID", activeMenuId);
     this.activeMenu = activePath;
     this.$router.push(this.activeMenu);
   },

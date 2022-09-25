@@ -7,6 +7,8 @@ import {
   getRequest
 } from '../api/network';
 import api from "../sdk/api"
+
+const prev = process.env.VUE_APP_KEYS ? process.env.VUE_APP_KEYS : 'COMMON';
 /**
  * 
  * @param {vuex实例} store 
@@ -56,8 +58,8 @@ function registerGlobalModule(store, props = {}, router = {}) {
           dispatch
         }, menuId) {
           try {
-            sessionStorage.removeItem('COMMIN_MENU_ID');
-            sessionStorage.removeItem('COMMIN_MENU_BTN');
+            sessionStorage.removeItem(prev+'-MENU-ID');
+            sessionStorage.removeItem(prev+'-MENU-BTN');
             if (!menuId) return;
             const res = await getRequest(api.MenuButton + `?id=${menuId}`);
             if (res && res.data.code === 200) {
@@ -68,8 +70,8 @@ function registerGlobalModule(store, props = {}, router = {}) {
                 }
                 commit('setMenuBtn', current);
                 dispatch('setGlobalState');
-                sessionStorage.setItem('COMMIN_MENU_ID', menuId);
-                sessionStorage.setItem('COMMIN_MENU_BTN', JSON.stringify(current));
+                sessionStorage.setItem(prev+'-MENU-ID', menuId);
+                sessionStorage.setItem(prev+'-MENU-BTN', JSON.stringify(current));
               }
             }
             return Promise.resolve(true);
@@ -94,15 +96,15 @@ function registerGlobalModule(store, props = {}, router = {}) {
               ...userInfo,
               token
             }
-            localStorage.setItem('COMMON-USER', JSON.stringify(data))
+            localStorage.setItem(prev+'-USER', JSON.stringify(data))
             if (params.currentApp) {
               //单独登录返回菜单
-              localStorage.setItem('COMMON-MENU', JSON.stringify(permissionList))
+              localStorage.setItem(prev+'-MENU', JSON.stringify(permissionList))
               commit('setMenu', data);
               dispatch('setGlobalState')
             } else {
               //统一登录返回App
-              localStorage.setItem('COMMON_APP', JSON.stringify(permissionList));
+              localStorage.setItem(prev+'-APP', JSON.stringify(permissionList));
               commit('setApp', permissionList);
               dispatch('setGlobalState')
             }
@@ -131,7 +133,7 @@ function registerGlobalModule(store, props = {}, router = {}) {
             data
           } = res.data;
           if (res && code === 200) {
-            localStorage.setItem('COMMON-MENU', JSON.stringify(data))
+            localStorage.setItem(prev+'-MENU', JSON.stringify(data))
             commit('setMenu', data);
             dispatch('setGlobalState')
           }

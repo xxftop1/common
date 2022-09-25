@@ -11,15 +11,17 @@ import {
   Message
 } from "element-ui";
 
+const prev = process.env.VUE_APP_KEYS ? process.env.VUE_APP_KEYS : 'COMMON';
 /**
  * 获取所有数据字典
  */
 const getAllDict = async () => {
   try {
+    const key = prev + '-dictList';
     const res = await getRequest(api.AllDict)
     if (res && res.data.code === 200) {
-      localStorage.setItem('COMMON-dictList', {})
-      localStorage.setItem('COMMON-dictList', JSON.stringify(res.data.data))
+      localStorage.setItem(key, {})
+      localStorage.setItem(key, JSON.stringify(res.data.data))
     }
   } catch (error) {
     Message.error('获取字典数据异常！', error)
@@ -32,7 +34,8 @@ const getAllDict = async () => {
  * @returns 
  */
 const getDistById = (id) => {
-  let dictList = localStorage.getItem("COMMON-dictList");
+  const key = prev + '-dictList';
+  let dictList = localStorage.getItem(key);
   if (dictList) {
     let dictAll = JSON.parse(dictList);
     let child = dictAll.find(ele => ele.dictId === id)
@@ -44,7 +47,8 @@ const getDistById = (id) => {
 
 const getMenuBtn = async () => {
   try {
-    const menuId = sessionStorage.getItem("COMMIN_MENU_ID");
+    const key = prev + '-MENU-ID';
+    const menuId = sessionStorage.getItem(key);
     if (!menuId) {
       return Promise.resolve(true);
     }
@@ -55,8 +59,8 @@ const getMenuBtn = async () => {
         let current = {
           [menuId]: data,
         }
-        sessionStorage.setItem("COMMIN_MENU_ID", menuId);
-        sessionStorage.setItem('COMMIN_MENU_BTN', JSON.stringify(current));
+        sessionStorage.setItem(key, menuId);
+        sessionStorage.setItem(prev + '-MENU-BTN', JSON.stringify(current));
       }
     }
     return Promise.resolve(true);
@@ -72,7 +76,8 @@ const getMenuBtn = async () => {
  * @returns 
  */
 const getDistBytype = (type) => {
-  let dictList = localStorage.getItem("COMMON-dictList");
+  const key = prev + '-dictList';
+  let dictList = localStorage.getItem(key);
   if (dictList) {
     let dictAll = JSON.parse(dictList);
     let child = dictAll.find(ele => ele.dictType === type)
