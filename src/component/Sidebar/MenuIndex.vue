@@ -18,6 +18,7 @@
         active-text-color="#6b7db3"
         :collapse-transition="false"
         mode="vertical"
+        @select="menuSelect"
       >
         <SidebarItem
           v-for="route in routes"
@@ -68,10 +69,6 @@ export default {
      * 切换菜单后。底部tab同步切换
      */
     activeMenu(v) {
-      const obj = this.childData.find((ele) => ele.uri === v);
-      const activeMenuId = obj ? obj.id : "";
-      const prev = process.env.VUE_APP_KEYS ? process.env.VUE_APP_KEYS : "COMMON";
-      sessionStorage.setItem(prev + "-MENU-ID", activeMenuId);
       if (this.activeTab.path === v) {
         return;
       }
@@ -99,6 +96,7 @@ export default {
     const obj = this.childData.find((ele) => ele.uri === activePath);
     const activeMenuId = obj ? obj.id : "";
     const prev = process.env.VUE_APP_KEYS ? process.env.VUE_APP_KEYS : "COMMON";
+    sessionStorage.removeItem(prev + "-MENU-ID");
     sessionStorage.setItem(prev + "-MENU-ID", activeMenuId);
     this.activeMenu = activePath;
     this.$router.push(this.activeMenu);
@@ -107,6 +105,13 @@ export default {
     ...mapActions("global", ["getMenuBtn"]),
     targetIcon() {
       this.$emit("targetIcon");
+    },
+    menuSelect() {
+      const obj = this.childData.find((ele) => ele.uri === v);
+      const activeMenuId = obj ? obj.id : "";
+      const prev = process.env.VUE_APP_KEYS ? process.env.VUE_APP_KEYS : "COMMON";
+      sessionStorage.removeItem(prev + "-MENU-ID");
+      sessionStorage.setItem(prev + "-MENU-ID", activeMenuId);
     },
   },
 };

@@ -96,15 +96,15 @@ function registerGlobalModule(store, props = {}, router = {}) {
               ...userInfo,
               token
             }
-            localStorage.setItem(prev+'-USER', JSON.stringify(data))
+            sessionStorage.setItem(prev+'-USER', JSON.stringify(data))
             if (params.currentApp) {
               //单独登录返回菜单
-              localStorage.setItem(prev+'-MENU', JSON.stringify(permissionList))
+              sessionStorage.setItem(prev+'-MENU', JSON.stringify(permissionList))
               commit('setMenu', data);
               dispatch('setGlobalState')
             } else {
               //统一登录返回App
-              localStorage.setItem(prev+'-APP', JSON.stringify(permissionList));
+              sessionStorage.setItem(prev+'-APP', JSON.stringify(permissionList));
               commit('setApp', permissionList);
               dispatch('setGlobalState')
             }
@@ -133,7 +133,7 @@ function registerGlobalModule(store, props = {}, router = {}) {
             data
           } = res.data;
           if (res && code === 200) {
-            localStorage.setItem(prev+'-MENU', JSON.stringify(data))
+            sessionStorage.setItem(prev+'-MENU', JSON.stringify(data))
             commit('setMenu', data);
             dispatch('setGlobalState')
           }

@@ -230,20 +230,8 @@ export default {
         }
         try {
           const res = await this.login(params);
-          // const res = await network.postRequest(api.Login, params);
           if (res && res.data.code === 200) {
             this.submitStatus = false;
-            // const { token, userInfo, permissionList } = res.data.data;
-            // let data = {
-            //   ...userInfo,
-            //   token,
-            // };
-            // localStorage.setItem("COMMIN_USER", JSON.stringify(data));
-            // localStorage.setItem("COMMIN_APP", JSON.stringify(permissionList));
-            // setUserInfo(JSON.stringify(data), {
-            //   path: "/",
-            //   domain: window.location.hostname,
-            // });
             this.$emit("ok", res);
           } else {
             this.errorMsg = res.data.msg;

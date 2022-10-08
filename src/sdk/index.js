@@ -20,8 +20,8 @@ const getAllDict = async () => {
     const key = prev + '-dictList';
     const res = await getRequest(api.AllDict)
     if (res && res.data.code === 200) {
-      localStorage.setItem(key, {})
-      localStorage.setItem(key, JSON.stringify(res.data.data))
+      sessionStorage.setItem(key, {})
+      sessionStorage.setItem(key, JSON.stringify(res.data.data))
     }
   } catch (error) {
     Message.error('获取字典数据异常！', error)
@@ -35,7 +35,7 @@ const getAllDict = async () => {
  */
 const getDistById = (id) => {
   const key = prev + '-dictList';
-  let dictList = localStorage.getItem(key);
+  let dictList = sessionStorage.getItem(key);
   if (dictList) {
     let dictAll = JSON.parse(dictList);
     let child = dictAll.find(ele => ele.dictId === id)
@@ -77,7 +77,7 @@ const getMenuBtn = async () => {
  */
 const getDistBytype = (type) => {
   const key = prev + '-dictList';
-  let dictList = localStorage.getItem(key);
+  let dictList = sessionStorage.getItem(key);
   if (dictList) {
     let dictAll = JSON.parse(dictList);
     let child = dictAll.find(ele => ele.dictType === type)
