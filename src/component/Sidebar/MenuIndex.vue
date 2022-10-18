@@ -76,28 +76,12 @@ export default {
     },
   },
   async mounted() {
-    /**
-     * 由于底部tab跟菜单是根据路由地址匹配，导致拿不到菜单的id
-     * 只能根据路由地址再去匹配菜单id
-     */
-    this.childData = this.routes.reduce((prev, curr) => {
-      if (curr.children && curr.children.length > 0) {
-        const data = [...prev, ...curr.children];
-        return data;
-      }
-      return prev;
-    }, []);
     let activePath = "";
     if (this.pageUrl) {
       activePath = this.pageUrl;
     } else {
-      activePath = this.childData[0].uri;
+      activePath = this.routes[0].children[0].uri;
     }
-    const obj = this.childData.find((ele) => ele.uri === activePath);
-    const activeMenuId = obj ? obj.id : "";
-    const prev = process.env.VUE_APP_KEYS ? process.env.VUE_APP_KEYS : "COMMON";
-    sessionStorage.removeItem(prev + "-MENU-ID");
-    sessionStorage.setItem(prev + "-MENU-ID", activeMenuId);
     this.activeMenu = activePath;
     this.$router.push(this.activeMenu);
   },
@@ -106,12 +90,11 @@ export default {
     targetIcon() {
       this.$emit("targetIcon");
     },
-    menuSelect() {
-      const obj = this.childData.find((ele) => ele.uri === v);
-      const activeMenuId = obj ? obj.id : "";
-      const prev = process.env.VUE_APP_KEYS ? process.env.VUE_APP_KEYS : "COMMON";
-      sessionStorage.removeItem(prev + "-MENU-ID");
-      sessionStorage.setItem(prev + "-MENU-ID", activeMenuId);
+    menuSelect(index, indexPath) {
+      //清理项目详情里的菜单
+      sessionStorage.removeItem("COMMON-CHILD-MENUS");
+      //清理上一个选中的菜单的按钮权限
+      sessionStorage.removeItem("COMMON-MENU-BTN");
     },
   },
 };

@@ -88,9 +88,9 @@ export default {
         if (params && params.name) {
           toPath.title = params.name;
         }
+        //重新设置选中路由
+        this.setActiveTab(toPath);
       }
-      //重新设置选中路由
-      this.setActiveTab(toPath);
     },
     async handleRemove(id) {
       await this.removeTab(id);
@@ -105,6 +105,8 @@ export default {
       if (!currentTab) {
         currentTab = this.activeTab;
       }
+      sessionStorage.removeItem("COMMON-MENU-BTN");
+      sessionStorage.removeItem("COMMON-MENU-ID");
       const { title, path, query } = currentTab;
       if (title) {
         document.title = title;

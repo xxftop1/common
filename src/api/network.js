@@ -5,7 +5,8 @@ import {
   Message
 } from "element-ui";
 import {
-  getUserInfo
+  getUserInfo,
+  removeUserInfo
 } from "../sdk/cookie.js"
 import fileServer from '../sdk/fileServer';
 
@@ -91,7 +92,8 @@ _axios.interceptors.response.use(data => {
     Message.error('权限不足,请联系管理员!');
   } else if (code == 401) {
     Message.error('token已过期!');
-    // store.setRedirect("/login");
+    removeUserInfo();
+    window.reload(true);
     return;
   }
   return data;

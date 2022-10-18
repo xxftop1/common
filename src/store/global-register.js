@@ -58,8 +58,8 @@ function registerGlobalModule(store, props = {}, router = {}) {
           dispatch
         }, menuId) {
           try {
-            sessionStorage.removeItem(prev+'-MENU-ID');
-            sessionStorage.removeItem(prev+'-MENU-BTN');
+            sessionStorage.removeItem(prev + '-MENU-ID');
+            sessionStorage.removeItem(prev + '-MENU-BTN');
             if (!menuId) return;
             const res = await getRequest(api.MenuButton + `?id=${menuId}`);
             if (res && res.data.code === 200) {
@@ -70,8 +70,8 @@ function registerGlobalModule(store, props = {}, router = {}) {
                 }
                 commit('setMenuBtn', current);
                 dispatch('setGlobalState');
-                sessionStorage.setItem(prev+'-MENU-ID', menuId);
-                sessionStorage.setItem(prev+'-MENU-BTN', JSON.stringify(current));
+                sessionStorage.setItem(prev + '-MENU-ID', menuId);
+                sessionStorage.setItem(prev + '-MENU-BTN', JSON.stringify(current));
               }
             }
             return Promise.resolve(true);
@@ -96,15 +96,15 @@ function registerGlobalModule(store, props = {}, router = {}) {
               ...userInfo,
               token
             }
-            sessionStorage.setItem(prev+'-USER', JSON.stringify(data))
+            sessionStorage.setItem(prev + '-USER', JSON.stringify(data))
             if (params.currentApp) {
               //单独登录返回菜单
-              sessionStorage.setItem(prev+'-MENU', JSON.stringify(permissionList))
+              sessionStorage.setItem(prev + '-MENU', JSON.stringify(permissionList))
               commit('setMenu', data);
               dispatch('setGlobalState')
             } else {
               //统一登录返回App
-              sessionStorage.setItem(prev+'-APP', JSON.stringify(permissionList));
+              sessionStorage.setItem(prev + '-APP', JSON.stringify(permissionList));
               commit('setApp', permissionList);
               dispatch('setGlobalState')
             }
@@ -133,7 +133,7 @@ function registerGlobalModule(store, props = {}, router = {}) {
             data
           } = res.data;
           if (res && code === 200) {
-            sessionStorage.setItem(prev+'-MENU', JSON.stringify(data))
+            sessionStorage.setItem(prev + '-MENU', JSON.stringify(data))
             commit('setMenu', data);
             dispatch('setGlobalState')
           }
@@ -188,7 +188,6 @@ function registerGlobalModule(store, props = {}, router = {}) {
           state.tabs.push(tab);
           commit('setActiveTab', tab);
           document.title = tab.title;
-          commit('setTabs', state.tabs);
           dispatch('setGlobalState')
         },
         /**
@@ -208,7 +207,6 @@ function registerGlobalModule(store, props = {}, router = {}) {
             }
             let nextTab = tabs[index] || tabs[index + 1] || tabs[index - 1];
             commit('setActiveTab', nextTab);
-            commit('setTabs', state.tabs);
             dispatch('setGlobalState');
           }
         },

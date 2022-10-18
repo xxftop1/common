@@ -5,15 +5,23 @@ const has = {
     Vue.directive('has', {
       //ele：为绑定的元素标签    bindings：绑定相关的信息
       // 当被绑定的元素插入到 DOM 中时…
-      inserted(ele, bindings) {
+      bind(ele, bindings) {
         let hasPemission = false;
         const prev = process.env.VUE_APP_KEYS ? process.env.VUE_APP_KEYS : "COMMON";
         const menuId = sessionStorage.getItem(prev + '-MENU-ID');
         const BtnData = JSON.parse(sessionStorage.getItem(prev + '-MENU-BTN'));
         if (menuId && BtnData) {
-          let permissions = []
-          permissions = BtnData[menuId].map(ele => ele.component);
-          hasPemission = permissions.includes(bindings.value)
+          const data = BtnData[menuId];
+          if (data && data.length > 0) {
+            let permissions = []
+            permissions = data.map(ele => ele.component);
+            const value = bindings.value;
+            if (typeof value === 'string') {
+              hasPemission = permissions.includes(value)
+            } else if (value instanceof Array) {
+              hasPemission = permissions.some(v => value.includes(v));
+            }
+          }
         }
         //bindings.expression为使用按钮的标识
         if (!hasPemission) { //页面中默认三个按钮都展示，没有相应权限时，删除此按钮

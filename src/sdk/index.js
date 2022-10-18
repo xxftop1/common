@@ -54,14 +54,12 @@ const getMenuBtn = async () => {
     }
     const res = await getRequest(api.MenuButton + `?id=${menuId}`);
     if (res && res.data.code === 200) {
-      const data = res.data.data;
-      if (data && data.length > 0) {
-        let current = {
-          [menuId]: data,
-        }
-        sessionStorage.setItem(key, menuId);
-        sessionStorage.setItem(prev + '-MENU-BTN', JSON.stringify(current));
+      const data = res.data.data || [];
+      let current = {
+        [menuId]: data,
       }
+      sessionStorage.setItem(key, menuId);
+      sessionStorage.setItem(prev + '-MENU-BTN', JSON.stringify(current));
     }
     return Promise.resolve(true);
   } catch (error) {

@@ -181,6 +181,7 @@ export default {
       if (this.imgUrl) {
         return;
       }
+      sessionStorage.removeItem("COMMON-CHILD-MENUS");
       history.pushState(null, "/", "/");
     },
     /**
