@@ -7,7 +7,6 @@ const has = {
       //ele：为绑定的元素标签    bindings：绑定相关的信息
       // 当被绑定的元素插入到 DOM 中时…
       bind(ele, bindings) {
-        debugger
         let hasPemission = false;
         const prev = process.env.VUE_APP_KEYS ? process.env.VUE_APP_KEYS : "COMMON";
         const menuId = sessionStorage.getItem(prev + '-MENU-ID');

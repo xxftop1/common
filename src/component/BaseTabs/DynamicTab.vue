@@ -58,8 +58,11 @@ export default {
     },
   },
   watch: {
-    activeTab(v) {
-      this.activeIndex = v.path;
+    activeTab(v, oldPath) {
+      if (v.path !== oldPath.path) {
+        this.activeIndex = v.path;
+        this.toUrl(v);
+      }
     },
     $route(to, from) {
       this.handleTab(to);
@@ -94,12 +97,10 @@ export default {
     },
     async handleRemove(id) {
       await this.removeTab(id);
-      this.toUrl();
     },
     handleClick(tab) {
       let currentTab = Object.assign({}, tab.labelContent());
       this.setActiveTab(currentTab);
-      this.toUrl(currentTab);
     },
     toUrl(currentTab) {
       if (!currentTab) {

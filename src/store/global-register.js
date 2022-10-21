@@ -205,8 +205,10 @@ function registerGlobalModule(store, props = {}, router = {}) {
             if (index !== -1) {
               tabs.splice(index, 1);
             }
-            let nextTab = tabs[index] || tabs[index + 1] || tabs[index - 1];
-            commit('setActiveTab', nextTab);
+            if (state.activeTab.path === id) {
+              let nextTab = tabs[index] || tabs[index + 1] || tabs[index - 1];
+              commit('setActiveTab', nextTab);
+            }
             dispatch('setGlobalState');
           }
         },
