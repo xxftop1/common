@@ -7,10 +7,12 @@ const has = {
       //ele：为绑定的元素标签    bindings：绑定相关的信息
       // 当被绑定的元素插入到 DOM 中时…
       bind(ele, bindings) {
+        debugger
         let hasPemission = false;
         const prev = process.env.VUE_APP_KEYS ? process.env.VUE_APP_KEYS : "COMMON";
         const menuId = sessionStorage.getItem(prev + '-MENU-ID');
         const BtnData = JSON.parse(sessionStorage.getItem(prev + '-MENU-BTN'));
+        const value = bindings.value;
         /**
          * csop 需要判断一下当前项目阶段是否已完成
          * 已完成不管是否有权限 除了查看按钮其他都不显示
@@ -26,13 +28,17 @@ const has = {
         }
         if (currentProjectState && currentProjectState === '4') {
           hasPemission = false;
+        } else if (!value && currentProjectState !== '4') {
+          /**
+           * 弹窗里的权限：阶段是未完成，权限值是空的情况默认显示
+           */
+          hasPemission = true;
         } else {
           if (menuId && BtnData) {
             const data = BtnData[menuId];
             if (data && data.length > 0) {
               let permissions = []
               permissions = data.map(ele => ele.component);
-              const value = bindings.value;
               if (typeof value === 'string') {
                 hasPemission = permissions.includes(value)
               } else if (value instanceof Array) {
