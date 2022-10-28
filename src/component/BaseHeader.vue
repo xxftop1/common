@@ -360,7 +360,7 @@ export default {
           }
           if (res.length > 1) {
             const value = res[1].data.data;
-            sessionStorage.setItem(key, JSON.stringify(value));
+            sessionStorage.setItem("COMMON-areas", JSON.stringify(value));
           }
           this.userVisible = true;
         }
