@@ -15,12 +15,12 @@
           <tr>
             <th width="60">用户名</th>
             <td class="text-right mr-5">
-              {{ userInfo.nickName || userInfo.displayName }}
+              {{ userInfo.nickName + "/" + userInfo.userName }}
             </td>
           </tr>
           <tr>
-            <th width="60">手机号</th>
-            <td class="text-right mr-5">{{ userInfo.phone }}</td>
+            <th width="60">邮箱</th>
+            <td class="text-right mr-5">{{ userInfo.email }}</td>
           </tr>
         </table>
         <table class="setting-box mt-5">
@@ -28,11 +28,24 @@
             <td class="user-operate">
               <a href="javascript:;" @click="modifyPassword = true">修改密码</a>
             </td>
+            <td class="user-operate">
+              <a href="javascript:;" @click="openUserForm">修改资料</a>
+            </td>
             <slot name="otherOper"></slot>
           </tr>
         </table>
         <div slot="reference">
-          <img src="../assets/img/touxiang1.png" alt="" />
+          <img
+            style="
+              height: 26px;
+              margin-right: 15px;
+              width: 26px;
+              border-radius: 50%;
+              vertical-align: middle;
+            "
+            :src="userInfo.icon ? userInfo.icon : require('../assets/img/touxiang1.png')"
+            alt=""
+          />
         </div>
       </el-popover>
       <span>|</span>
@@ -80,6 +93,30 @@
         </el-row>
       </el-form>
     </el-dialog>
+
+    <el-dialog
+      title="修改个人信息"
+      width="900px"
+      :visible.sync="userVisible"
+      append-to-body
+      :close-on-click-modal="false"
+      :close-on-press-escape="false"
+    >
+      <user-edit-form
+        :param="userForm"
+        :formLabel="userFormLabel"
+        :rules="userRules"
+        :span="12"
+        ref="userForm"
+      >
+      </user-edit-form>
+      <el-row class="text-center">
+        <el-button plain @click="cancel">取消</el-button>
+        <el-button type="primary" @click="saveUser" :loading="userloading"
+          >保存</el-button
+        >
+      </el-row>
+    </el-dialog>
   </div>
 </template>
 
@@ -87,8 +124,11 @@
 import { removeUserInfo, getToken, getUserInfo } from "../sdk/cookie";
 import network from "../api/index.js";
 import api from "../sdk/api.js";
+import UserEditForm from "./UserEditForm.vue";
+import sdk from "../sdk/index";
 export default {
   name: "",
+  components: { UserEditForm },
   props: {
     imgUrl: {
       type: String,
@@ -136,11 +176,7 @@ export default {
       }
     };
     return {
-      userInfo: {
-        nickName: "",
-        displayName: "",
-        phone: "",
-      },
+      userInfo: {},
       baseImgUrl: "",
       modifyPassword: false,
       form: {
@@ -158,17 +194,138 @@ export default {
         newPassword: "",
         confirmPassword: "",
       },
+
+      //修改用户资料
+      userVisible: false,
+      userloading: false,
+      userForm: {
+        id: "",
+        idno: "",
+        cellPhone: "",
+        tellPhone: "",
+        email: "",
+        education: "",
+        school: "",
+        graduateDate: "",
+        major: "",
+        bankName: "",
+        bankAccount: "",
+        bank: [], //开户行
+        emergencyName: "", //紧急联系人
+        emergencyPhone: "",
+        emergencyContact: "",
+      },
+      userFormLabel: [
+        {
+          mode: "idno",
+          type: "input",
+          label: "身份证号",
+        },
+        {
+          mode: "tellPhone",
+          type: "input",
+          label: "私人手机",
+        },
+        {
+          mode: "cellPhone",
+          type: "input",
+          label: "公司手机",
+        },
+        {
+          mode: "email",
+          type: "input",
+          label: "邮箱",
+        },
+        {
+          mode: "education",
+          type: "select",
+          opts: sdk.getDistBytype("education"),
+          label: "最高学历",
+        },
+        {
+          mode: "school",
+          type: "input",
+          label: "毕业学校",
+        },
+        {
+          mode: "graduateDate",
+          type: "date",
+          label: "毕业时间",
+        },
+        {
+          mode: "major",
+          type: "input",
+          label: "专业",
+        },
+        {
+          mode: "bankName",
+          type: "input",
+          label: "开户行",
+        },
+        {
+          mode: "bank",
+          type: "cascader",
+          label: "开户行地址",
+          opts: JSON.parse(sessionStorage.getItem("COMMON-areas")),
+        },
+        {
+          mode: "bankAccount",
+          type: "input",
+          label: "开户行账号",
+        },
+        {
+          mode: "emergencyName",
+          type: "input",
+          label: "紧急联系人姓名",
+        },
+        {
+          mode: "emergencyPhone",
+          type: "input",
+          label: "紧急联系人电话",
+        },
+        {
+          mode: "emergencyContact",
+          type: "select",
+          label: "紧急联系人关系",
+          opts: sdk.getDistBytype("emergency_contact"),
+        },
+      ],
+      userRules: {
+        cellPhone: [
+          { required: true, trigger: "blur", message: "请输入手机" },
+          { pattern: /^1[3456789]\d{9}$/, message: "手机号格式不正确", trigger: "blur" },
+        ],
+        email: [
+          {
+            pattern: /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/,
+            message: "邮箱格式不正确",
+            trigger: "blur",
+          },
+        ],
+        idno: [
+          { required: true, message: "请输入身份证号", trigger: "blur" },
+          {
+            pattern: /^[1-8][1-7]\d{4}(?:19|20)\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])\d{3}[\dX]$/,
+            message: "身份证号格式不正确",
+            trigger: "blur",
+          },
+        ],
+      },
     };
   },
   //生命周期 - 创建完成（访问当前this实例）
   created() {},
   //生命周期 - 挂载完成（访问DOM元素）
   mounted() {
-    const { nickName, displayName, phone } = getUserInfo();
+    const { id, nickName, displayName, phone, icon, email, userName } = getUserInfo();
     this.userInfo = {
       nickName,
       displayName,
       phone,
+      icon,
+      email,
+      userName,
+      id,
     };
     if (!this.imgUrl) {
       this.baseImgUrl = require("../assets/img/xiaohua.png");
@@ -183,6 +340,69 @@ export default {
       }
       sessionStorage.removeItem("COMMON-CHILD-MENUS");
       history.pushState(null, "/", "/");
+    },
+    openUserForm() {
+      let requestArr = [network.getRequest(api.Detail + `?id=${this.userInfo.id}`)];
+      const data = JSON.parse(sessionStorage.getItem("COMMON-areas"));
+      if (!data) {
+        requestArr.push(network.getRequest(api.Area));
+      }
+      Promise.all(requestArr).then((res) => {
+        if (res) {
+          const data = res[0].data.data;
+          this.userForm = { ...data };
+          this.userForm.bank = [];
+          if (data.bankProvince) {
+            this.userForm.bank.push(data.bankProvince);
+          }
+          if (data.bankCity) {
+            this.userForm.bank.push(data.bankCity);
+          }
+          if (res.length > 1) {
+            const value = res[1].data.data;
+            sessionStorage.setItem(key, JSON.stringify(value));
+          }
+          this.userVisible = true;
+        }
+      });
+    },
+    async saveUser() {
+      try {
+        const valid = await this.$refs.userForm.$refs.form.validate();
+        if (valid) {
+          this.userloading = true;
+          const param = { ...this.userForm };
+          param.id = this.userInfo.id;
+          if (param.bank.length > 0) {
+            param.bankProvince = param.bank[0];
+            param.bankCity = param.bank[1];
+          }
+          let res = await network.postRequest(api.UpdateSelf, this.userForm);
+          if (res && res.data.code === 200) {
+            this.$message.success("修改个人信息成功！");
+            this.$refs.userForm.$refs.form.resetFields();
+            this.cancel();
+          }
+          this.userloading = false;
+        }
+      } catch (error) {
+        this.userloading = false;
+        console.log(error);
+      }
+    },
+    cancel() {
+      if (this.$refs.userForm) {
+        this.$refs.userForm.$refs.form.resetFields();
+      } else {
+        Object.keys(this.userForm).forEach((key) => {
+          if (typeof key === "string") {
+            this.userForm[key] = "";
+          } else if (key instanceof Array) {
+            this.userForm[key] = [];
+          }
+        });
+      }
+      this.userVisible = false;
     },
     /**
      * 修改密码
@@ -200,23 +420,26 @@ export default {
             this.errors.confirmPassword = "两次输入的密码不一致!";
             return;
           }
-          if (!this.apiUrl) {
-            this.$message.warning("请确认请求接口有值！");
-            return;
-          }
-          this.getRequest(
-            this.apiUrl +
-              `?password=${password}&renewPassword=${renewPassword}&newPassword=${newPassword}`
-          ).then((res) => {
-            if (res && res.data.code === 200) {
-              this.$message.success("恭喜您，密码修改成功!");
-              this.modifyPassword = false;
-              $form.resetFields();
-              $form.clearValidate();
-            } else {
-              return;
-            }
-          });
+          // if (!this.apiUrl) {
+          //   this.$message.warning("请确认请求接口有值！");
+          //   return;
+          // }
+          network
+            .postRequest(api.UpdatePassword, {
+              oldPassword: password,
+              renewPassword: renewPassword,
+              newPassword: newPassword,
+            })
+            .then((res) => {
+              if (res && res.data.code === 200) {
+                this.$message.success("恭喜您，密码修改成功!");
+                this.modifyPassword = false;
+                $form.resetFields();
+                $form.clearValidate();
+              } else {
+                return;
+              }
+            });
         }
       });
     },

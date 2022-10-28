@@ -20,7 +20,7 @@ const has = {
         if (window.location.pathname.includes('sub-csop')) {
           const currentProjectInfo = JSON.parse(sessionStorage.getItem(prev + '-CURRENT-PROJECTINFO'));
           const temp = sessionStorage.getItem('COMMON-CHILD-MENUURI');
-          if (temp) {
+          if (currentProjectInfo && temp) {
             const currentProjectId = temp.split("/").pop();
             currentProjectState = currentProjectInfo[currentProjectId];
           }

@@ -106,6 +106,7 @@ export default {
       if (!currentTab) {
         currentTab = this.activeTab;
       }
+      sessionStorage.removeItem("COMMON-CURRENT-PROJECTINFO");
       sessionStorage.removeItem("COMMON-MENU-BTN");
       sessionStorage.removeItem("COMMON-MENU-ID");
       const { title, path, query } = currentTab;
