@@ -266,7 +266,7 @@ export default {
           mode: "bank",
           type: "cascader",
           label: "开户行地址",
-          opts: JSON.parse(sessionStorage.getItem("COMMON-areas")),
+          opts: [],
         },
         {
           mode: "bankAccount",
@@ -311,6 +311,7 @@ export default {
           },
         ],
       },
+      areas: [],
     };
   },
   //生命周期 - 创建完成（访问当前this实例）
@@ -343,8 +344,8 @@ export default {
     },
     openUserForm() {
       let requestArr = [network.getRequest(api.Detail + `?id=${this.userInfo.id}`)];
-      const data = JSON.parse(sessionStorage.getItem("COMMON-areas"));
-      if (!data) {
+      const areas = JSON.parse(sessionStorage.getItem("COMMON-areas"));
+      if (!areas) {
         requestArr.push(network.getRequest(api.Area));
       }
       Promise.all(requestArr).then((res) => {
@@ -361,6 +362,19 @@ export default {
           if (res.length > 1) {
             const value = res[1].data.data;
             sessionStorage.setItem("COMMON-areas", JSON.stringify(value));
+            this.userFormLabel.splice(9, 1, {
+              mode: "bank",
+              type: "cascader",
+              label: "开户行地址",
+              opts: value,
+            });
+          } else {
+            this.userFormLabel.splice(9, 1, {
+              mode: "bank",
+              type: "cascader",
+              label: "开户行地址",
+              opts: areas,
+            });
           }
           this.userVisible = true;
         }

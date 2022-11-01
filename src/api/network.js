@@ -3,7 +3,7 @@
 import axios from "axios";
 import {
   Message
-} from "element-ui";
+} from 'element-ui';
 import {
   getUserInfo,
   removeUserInfo
@@ -42,6 +42,7 @@ let requestObj = apiArr.find(ele => pathname.includes(ele.appPath));
 if (requestObj) {
   const prevUrl = process.env.NODE_ENV === 'development' ? protocol + "//" + hostname : origin
   baseURL = prevUrl + requestObj.baseUrl;
+  baseURL = origin + requestObj.baseUrl;
 }
 let config = {
   baseURL: baseURL,
@@ -82,7 +83,7 @@ _axios.interceptors.request.use(config => {
 
 _axios.interceptors.response.use(data => {
   let code = data.data.code;
-  if (code && code !== 200) {
+  if (code && code === 500) {
     Message.warning({
       message: data.data.msg || data.data.message || 'Error',
       type: 'warning',
@@ -91,10 +92,14 @@ _axios.interceptors.response.use(data => {
   } else if (code == 403 || code == 404) {
     Message.error('权限不足,请联系管理员!');
   } else if (code == 401) {
-    Message.error('token已过期!');
+    alert('token已过期!,请点击确认重新登录');
     removeUserInfo();
-    window.reload(true);
-    return;
+    if (!window.__POWERED_BY_QIANKUN__) {
+      this.$router.push("/login");
+      return Promise.reject();
+    }
+    window.history.replaceState(null, "", "/login");
+    return Promise.reject();
   }
   return data;
 }, err => {
