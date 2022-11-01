@@ -40,9 +40,14 @@ const apiArr = [{
 ]
 let requestObj = apiArr.find(ele => pathname.includes(ele.appPath));
 if (requestObj) {
-  const prevUrl = process.env.NODE_ENV === 'development' ? protocol + "//" + hostname : origin
+  const isProxy = process.env.VUE_APP_PROXY;
+  let prevUrl;
+  if (isProxy) {
+    prevUrl = process.env.NODE_ENV === 'development' ? protocol + "//" + hostname : origin
+  } else {
+    prevUrl = origin;
+  }
   baseURL = prevUrl + requestObj.baseUrl;
-  baseURL = origin + requestObj.baseUrl;
 }
 let config = {
   baseURL: baseURL,
