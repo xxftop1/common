@@ -2,7 +2,7 @@
 <template>
   <div class="height-fill width-fill layout">
     <header>
-      <base-header :imgUrl="imgUrl"></base-header>
+      <base-header :imgUrl="imgUrl" :apiUrl="apiUrl"></base-header>
     </header>
     <section class="main">
       <template v-if="routes && routes.length > 0">
@@ -38,6 +38,10 @@ export default {
       default: () => [],
     },
     imgUrl: {
+      type: String,
+      default: "",
+    },
+    apiUrl: {
       type: String,
       default: "",
     },

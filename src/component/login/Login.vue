@@ -1,41 +1,44 @@
 <template>
-  <el-container class="login">
-    <img src="../../assets/img/login.png" alt="" class="login-left__logo" />
+  <section class="login">
+    <p class="login-header">
+      <img src="../../assets/img/logo.png" alt="" class="login-header__img" />
+    </p>
     <div class="login-content">
-      <div class="login-content__title">
-        <p class="login-content__title__welcome">欢迎登录</p>
-        <p>万怡医学内部管理系统</p>
-      </div>
-      <el-form
-        ref="form"
-        :model="form"
-        class="login-content__form"
-        :rules="rules"
-        autocomplete="off"
-      >
-        <el-form-item prop="email">
-          <el-input
-            type="text"
-            id="Input_UserName"
-            prefix-icon="el-icon-user"
-            v-model="form.email"
-            auto-complete="email"
-            @keyup.enter.native="handleSubmit"
-            placeholder="请输入用户名"
-          ></el-input>
-        </el-form-item>
-        <el-form-item prop="password">
-          <el-input
-            type="password"
-            id="Input_Password"
-            prefix-icon="el-icon-lock"
-            v-model="form.password"
-            auto-complete="new-password"
-            @keyup.enter.native="handleSubmit"
-            placeholder="请输入密码"
-          ></el-input>
-        </el-form-item>
-        <!-- <el-form-item prop="captcha" style="position:reletive">
+      <main class="login-content__box">
+        <div class="login-content__title">
+          <p class="login-content__title__welcome">
+            欢迎<span style="color: #2e974c">登录</span>
+          </p>
+          <p>万怡医学内部管理系统</p>
+        </div>
+        <el-form
+          ref="form"
+          :model="form"
+          class="login-content__form"
+          :rules="rules"
+          autocomplete="off"
+        >
+          <el-form-item prop="email">
+            <el-input
+              type="text"
+              id="Input_UserName"
+              v-model="form.email"
+              auto-complete="email"
+              @keyup.enter.native="handleSubmit"
+              placeholder="请输入用户名"
+            ></el-input>
+          </el-form-item>
+          <el-form-item prop="password">
+            <el-input
+              type="password"
+              id="Input_Password"
+              v-model="form.password"
+              auto-complete="new-password"
+              @keyup.enter.native="handleSubmit"
+              placeholder="请输入密码"
+            ></el-input>
+          </el-form-item>
+          <!-- <el-form-item prop="captcha" style="position:reletive">
               <el-inputs
                 type="text"
                 id="Input_Captcha"
@@ -51,23 +54,25 @@
                 @click="getCaptcha"
               ></el-image>
             </el-form-item> -->
-        <el-form-item prop="error" :error="errorMsg" v-show="errorMsg"></el-form-item>
-        <el-form-item>
-          <el-link type="primary" :underline="false" class="password_update"
-            >忘记密码</el-link
-          >
-        </el-form-item>
-        <el-form-item>
-          <el-button
-            type="primary"
-            id="Button_Login"
-            class="login-button"
-            :loading="submitStatus"
-            @click="handleSubmit"
-            >登录</el-button
-          >
-        </el-form-item>
-      </el-form>
+          <el-form-item prop="error" :error="errorMsg" v-show="errorMsg"></el-form-item>
+          <el-form-item>
+            <el-button
+              type="primary"
+              id="Button_Login"
+              class="login-button"
+              :loading="submitStatus"
+              @click="handleSubmit"
+              >登录</el-button
+            >
+          </el-form-item>
+          <el-form-item>
+            <div class="password_update">
+              <el-checkbox v-model="rememberPaw">记住密码</el-checkbox>
+              <!-- <el-button type="text">忘记密码</el-button> -->
+            </div>
+          </el-form-item>
+        </el-form>
+      </main>
     </div>
     <el-dialog
       title="忘记密码"
@@ -121,14 +126,13 @@
         </el-form-item>
       </el-form>
     </el-dialog>
-  </el-container>
+  </section>
 </template>
 
 <script>
-import network from "../../api/index.js";
-import api from "../../sdk/api.js";
-import { setUserInfo } from "../../sdk/cookie.js";
-import { mapState, mapActions } from "vuex";
+import { setRememberInfo, removeRememberInfo, getUserInfo } from "../../sdk/cookie.js";
+import { mapActions } from "vuex";
+const Base64 = require("js-base64").Base64;
 export default {
   props: {
     currentApp: String,
@@ -148,6 +152,7 @@ export default {
     return {
       captchaurl: "",
       modifyPassword: false,
+      rememberPaw: true, //是否记住密码
       form: {
         email: "",
         password: "",
@@ -200,7 +205,17 @@ export default {
       submitStatus: false,
     };
   },
-  created() {},
+  created() {
+    debugger
+    if (this.rememberPaw) {
+      const rememberInfo = getUserInfo("wy-rememberInfo");
+      if (rememberInfo) {
+        const { userId, password } = rememberInfo;
+        this.form.email = userId;
+        this.form.password = Base64.decode(password);
+      }
+    }
+  },
   mounted() {},
   computed: {},
   methods: {
@@ -232,6 +247,13 @@ export default {
           const res = await this.login(params);
           if (res && res.data.code === 200) {
             this.submitStatus = false;
+            //勾选了选中密码
+            if (this.rememberPaw) {
+              let password = Base64.encode(this.form.password); // base64加密
+              setRememberInfo("wy", this.form.email.trim(), password, 7);
+            } else {
+              removeRememberInfo("wy");
+            }
             this.$emit("ok", res);
           } else {
             this.errorMsg = res.data.msg;
@@ -251,47 +273,82 @@ export default {
 .login {
   #Input_UserName,
   #Input_Password {
-    border-radius: 4px !important;
+    border-radius: 8px !important;
     height: 40px !important;
     line-height: 40px !important;
+    background: #f5f6f8;
+  }
+  .el-form-item--small.el-form-item {
+    margin-bottom: 15px;
+  }
+  .el-checkbox__inner {
+    background: #f5f6f8;
+    border: 1px solid #b2b7c0;
+    border-radius: 4px;
+    &:hover {
+      border-color: #b2b7c0;
+    }
+  }
+  .el-checkbox__input.is-checked .el-checkbox__inner {
+    background-color: #2e974c;
+    border-color: #2e974c;
   }
 }
 </style>
 <style lang="scss" scoped>
 $--color-text-primary: #4d4d4d;
 .login {
-  background-image: url("../../assets/img/loginBg.png");
-  background-size: 100% 100%;
-  background-position: center;
+  background-color: #e9eff4;
+  background-image: url("../../assets/img/bg.png");
+  background-size: 100% 50%;
+  background-position: bottom;
   background-repeat: no-repeat;
   min-height: 0;
   overflow: hidden;
   height: 100%;
   position: relative;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+
+  &-header {
+    background: #fff;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    padding: 8px 0;
+    &__img {
+      margin-left: 120px;
+      height: 100%;
+    }
+  }
 
   .login-content {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 340px;
-    width: 360px;
     position: relative;
-    margin-right: 110px;
+    flex: 1;
+    width: 100%;
+    overflow: hidden;
+    &__box {
+      min-height: 340px;
+      width: 360px;
+      background: #fff;
+      border-radius: 8px;
+      padding: 20px 40px;
+    }
     &__title {
       width: 100%;
-      margin-bottom: 90px;
-      font-size: 24px;
+      margin-bottom: 20px;
+      font-size: 16px;
       font-weight: 500;
       color: $--color-text-primary;
       line-height: 36px;
       &__welcome {
-        font-size: 43px;
+        font-size: 26px;
         font-weight: bold;
         color: $--color-text-primary;
-        line-height: 64px;
       }
     }
     &__form {
@@ -299,20 +356,19 @@ $--color-text-primary: #4d4d4d;
       height: fit-content;
       .password_update {
         font-size: 14px;
-        font-weight: 500;
-        color: #6b7bb3;
-        line-height: 29px;
         display: flex;
-        justify-content: flex-end;
+        align-items: center;
+        justify-content: space-between;
       }
       .login-button {
         width: 100%;
-        border-radius: 37px;
-        margin-top: 20px;
+        margin-top: 10px;
         height: 40px;
         display: flex;
         justify-content: center;
         align-items: center;
+        background-color: #2e974c;
+        border-radius: 4px;
       }
     }
     .login-footer-center {

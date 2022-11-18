@@ -434,26 +434,40 @@ export default {
             this.errors.confirmPassword = "两次输入的密码不一致!";
             return;
           }
-          // if (!this.apiUrl) {
-          //   this.$message.warning("请确认请求接口有值！");
-          //   return;
-          // }
-          network
-            .postRequest(api.UpdatePassword, {
-              oldPassword: password,
-              renewPassword: renewPassword,
-              newPassword: newPassword,
-            })
-            .then((res) => {
-              if (res && res.data.code === 200) {
-                this.$message.success("恭喜您，密码修改成功!");
-                this.modifyPassword = false;
-                $form.resetFields();
-                $form.clearValidate();
-              } else {
-                return;
-              }
-            });
+          if (this.apiUrl) {
+            network
+              .getRequest(
+                this.apiUrl +
+                  `?password=${password}&renewPassword=${renewPassword}&newPassword=${newPassword}`
+              )
+              .then((res) => {
+                if (res && res.data.code === 200) {
+                  this.$message.success("恭喜您，密码修改成功!");
+                  this.modifyPassword = false;
+                  $form.resetFields();
+                  $form.clearValidate();
+                } else {
+                  return;
+                }
+              });
+          } else {
+            network
+              .postRequest(api.UpdatePassword, {
+                oldPassword: password,
+                renewPassword: renewPassword,
+                newPassword: newPassword,
+              })
+              .then((res) => {
+                if (res && res.data.code === 200) {
+                  this.$message.success("恭喜您，密码修改成功!");
+                  this.modifyPassword = false;
+                  $form.resetFields();
+                  $form.clearValidate();
+                } else {
+                  return;
+                }
+              });
+          }
         }
       });
     },
