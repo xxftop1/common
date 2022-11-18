@@ -11,6 +11,7 @@
     "binary-extensions": "^2.2.0",
     "de-indent": "^1.0.2",
     "emojis-list": "^3.0.0",
+    "js-base64": "^3.7.3",
     "js-cookie": "^3.0.1",
     "schema-utils": "^3.1.1"
   },
