@@ -1,5 +1,5 @@
 <template>
-  <div class="sidebar">
+  <div class="sidebar" :style="{ width: width }">
     <!--<div
       class="sidebar-title aside-icon"
       :class="asideShow === false ? 'headers-left-active' : ''"
@@ -10,15 +10,24 @@
         class="sidebar-fold"
       ></i>
     </div> @select="menuSelect" -->
+    <i
+      :class="[
+        isCollapse ? 'iconfont icon-zhankai' : 'iconfont icon-shouqi',
+        'menu-tb',
+      ]"
+      @click="handleMenuCollapse"
+    ></i>
     <div class="sidebar-box">
       <el-menu
+        :default-openeds="defaultOpeneds"
         :default-active="activeMenu"
         text-color="#4d4d4d"
-        unique-opened
+        :unique-opened="isSingleOpen"
         active-text-color="#6b7db3"
         :collapse-transition="false"
         mode="vertical"
         @select="menuSelect"
+        :collapse="isCollapse"
       >
         <SidebarItem
           v-for="route in routes"
@@ -47,11 +56,19 @@ export default {
       type: Array,
       default: () => [],
     },
+    //是否只打开一个一级菜单
+    isSingleOpen: {
+      type: Boolean,
+      default: false,
+    }
   },
   data() {
     return {
       activeMenu: "",
       childData: [],
+      isCollapse: false,
+      width: 180 + "px",
+      defaultOpeneds:[]
     };
   },
   computed: {
@@ -76,6 +93,9 @@ export default {
     },
   },
   async mounted() {
+    if (!this.isSingleOpen) {
+      this.defaultOpeneds = this.routes.map((ele) => ele.id + "");
+    }
     let activePath = "";
     if (this.pageUrl) {
       activePath = this.pageUrl;
@@ -96,6 +116,14 @@ export default {
       //清理上一个选中的菜单的按钮权限
       sessionStorage.removeItem("COMMON-MENU-BTN");
     },
+
+    handleMenuCollapse() {
+      this.isCollapse = !this.isCollapse;
+      this.width = this.isCollapse ? 32 + "px" : 180 + "px";
+      if (!this.isSingleOpen) {
+        this.defaultOpeneds = this.routes.map((ele) => ele.id + "");
+      }
+    },
   },
 };
 </script>
@@ -106,6 +134,15 @@ export default {
   height: 100%;
   position: relative;
   z-index: 5;
+
+  .menu-tb {
+    position: absolute;
+    right: -17px;
+    top: 40%;
+    z-index: 10;
+    color: $--color-primary;
+    font-size: 50px;
+  }
 }
 .sidebar-title {
   width: 100%;
