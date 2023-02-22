@@ -58,8 +58,8 @@ function registerGlobalModule(store, props = {}, router = {}) {
           dispatch
         }, menuId) {
           try {
-            sessionStorage.removeItem(prev + '-MENU-ID');
-            sessionStorage.removeItem(prev + '-MENU-BTN');
+            localStorage.removeItem(prev + '-MENU-ID');
+            localStorage.removeItem(prev + '-MENU-BTN');
             if (!menuId) return;
             const res = await getRequest(api.MenuButton + `?id=${menuId}`);
             if (res && res.data.code === 200) {
@@ -70,8 +70,8 @@ function registerGlobalModule(store, props = {}, router = {}) {
                 }
                 commit('setMenuBtn', current);
                 dispatch('setGlobalState');
-                sessionStorage.setItem(prev + '-MENU-ID', menuId);
-                sessionStorage.setItem(prev + '-MENU-BTN', JSON.stringify(current));
+                localStorage.setItem(prev + '-MENU-ID', menuId);
+                localStorage.setItem(prev + '-MENU-BTN', JSON.stringify(current));
               }
             }
             return Promise.resolve(true);
@@ -96,15 +96,15 @@ function registerGlobalModule(store, props = {}, router = {}) {
               ...userInfo,
               token
             }
-            sessionStorage.setItem(prev + '-USER', JSON.stringify(data))
+            localStorage.setItem(prev + '-USER', JSON.stringify(data))
             if (params.currentApp) {
               //单独登录返回菜单
-              sessionStorage.setItem(prev + '-MENU', JSON.stringify(permissionList))
+              localStorage.setItem(prev + '-MENU', JSON.stringify(permissionList))
               commit('setMenu', data);
               dispatch('setGlobalState')
             } else {
               //统一登录返回App
-              sessionStorage.setItem(prev + '-APP', JSON.stringify(permissionList));
+              localStorage.setItem(prev + '-APP', JSON.stringify(permissionList));
               commit('setApp', permissionList);
               dispatch('setGlobalState')
             }
@@ -133,7 +133,7 @@ function registerGlobalModule(store, props = {}, router = {}) {
             data
           } = res.data;
           if (res && code === 200) {
-            sessionStorage.setItem(prev + '-MENU', JSON.stringify(data))
+            localStorage.setItem(prev + '-MENU', JSON.stringify(data))
             commit('setMenu', data);
             dispatch('setGlobalState')
           }

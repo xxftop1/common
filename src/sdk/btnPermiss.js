@@ -9,8 +9,8 @@ const has = {
       bind(ele, bindings) {
         let hasPemission = false;
         const prev = process.env.VUE_APP_KEYS ? process.env.VUE_APP_KEYS : "COMMON";
-        const menuId = sessionStorage.getItem(prev + '-MENU-ID');
-        const BtnData = JSON.parse(sessionStorage.getItem(prev + '-MENU-BTN'));
+        const menuId = localStorage.getItem(prev + '-MENU-ID');
+        const BtnData = JSON.parse(localStorage.getItem(prev + '-MENU-BTN'));
         const value = bindings.value;
         /**
          * csop 需要判断一下当前项目阶段是否已完成
@@ -18,8 +18,8 @@ const has = {
          */
         let currentProjectState;
         if (window.location.pathname.includes('sub-csop')) {
-          const currentProjectInfo = JSON.parse(sessionStorage.getItem(prev + '-CURRENT-PROJECTINFO'));
-          const temp = sessionStorage.getItem('COMMON-CHILD-MENUURI');
+          const currentProjectInfo = JSON.parse(localStorage.getItem(prev + '-CURRENT-PROJECTINFO'));
+          const temp = localStorage.getItem('COMMON-CHILD-MENUURI');
           if (currentProjectInfo && temp) {
             const currentProjectId = temp.split("/").pop();
             currentProjectState = currentProjectInfo[currentProjectId];

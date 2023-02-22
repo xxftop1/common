@@ -20,8 +20,8 @@ const getAllDict = async () => {
     const key = prev + '-dictList';
     const res = await getRequest(api.AllDict)
     if (res && res.data.code === 200) {
-      sessionStorage.setItem(key, {})
-      sessionStorage.setItem(key, JSON.stringify(res.data.data))
+      localStorage.setItem(key, {})
+      localStorage.setItem(key, JSON.stringify(res.data.data))
     }
   } catch (error) {
     Message.error('获取字典数据异常！', error)
@@ -35,7 +35,7 @@ const getAllDict = async () => {
  */
 const getDistById = (id) => {
   const key = prev + '-dictList';
-  let dictList = sessionStorage.getItem(key);
+  let dictList = localStorage.getItem(key);
   if (dictList) {
     let dictAll = JSON.parse(dictList);
     let child = dictAll.find(ele => ele.dictId === id)
@@ -48,7 +48,7 @@ const getDistById = (id) => {
 const getMenuBtn = async () => {
   try {
     const key = prev + '-MENU-ID';
-    const menuId = sessionStorage.getItem(key);
+    const menuId = localStorage.getItem(key);
     if (!menuId) {
       return Promise.resolve(true);
     }
@@ -58,8 +58,8 @@ const getMenuBtn = async () => {
       let current = {
         [menuId]: data,
       }
-      sessionStorage.setItem(key, menuId);
-      sessionStorage.setItem(prev + '-MENU-BTN', JSON.stringify(current));
+      localStorage.setItem(key, menuId);
+      localStorage.setItem(prev + '-MENU-BTN', JSON.stringify(current));
     }
     return Promise.resolve(true);
   } catch (error) {
@@ -75,7 +75,7 @@ const getMenuBtn = async () => {
  */
 const getDistBytype = (type) => {
   const key = prev + '-dictList';
-  let dictList = sessionStorage.getItem(key);
+  let dictList = localStorage.getItem(key);
   if (dictList) {
     let dictAll = JSON.parse(dictList);
     let child = dictAll.find(ele => ele.dictType === type)

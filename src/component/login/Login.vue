@@ -206,7 +206,6 @@ export default {
     };
   },
   created() {
-    debugger
     if (this.rememberPaw) {
       const rememberInfo = getUserInfo("wy-rememberInfo");
       if (rememberInfo) {
