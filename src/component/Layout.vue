@@ -6,8 +6,8 @@
     </header>
     <section class="main">
       <template v-if="routes && routes.length > 0">
-        <aside style="width: 180px">
-          <menu-index :routes="routes"></menu-index>
+        <aside>
+          <menu-index :routes="routes" :isSingleOpen="isSingleOpen"></menu-index>
         </aside>
         <section class="main-box">
           <main :class="[isSetting ? 'setting-main' : 'other-main']">
@@ -44,6 +44,10 @@ export default {
     apiUrl: {
       type: String,
       default: "",
+    },
+    isSingleOpen: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {

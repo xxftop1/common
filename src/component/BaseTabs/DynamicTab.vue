@@ -106,9 +106,9 @@ export default {
       if (!currentTab) {
         currentTab = this.activeTab;
       }
-      sessionStorage.removeItem("COMMON-CURRENT-PROJECTINFO");
-      sessionStorage.removeItem("COMMON-MENU-BTN");
-      sessionStorage.removeItem("COMMON-MENU-ID");
+      localStorage.removeItem("COMMON-CURRENT-PROJECTINFO");
+      localStorage.removeItem("COMMON-MENU-BTN");
+      localStorage.removeItem("COMMON-MENU-ID");
       const { title, path, query } = currentTab;
       if (title) {
         document.title = title;

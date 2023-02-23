@@ -339,12 +339,12 @@ export default {
       if (this.imgUrl) {
         return;
       }
-      sessionStorage.removeItem("COMMON-CHILD-MENUS");
+      localStorage.removeItem("COMMON-CHILD-MENUS");
       history.pushState(null, "/", "/");
     },
     openUserForm() {
       let requestArr = [network.getRequest(api.Detail + `?id=${this.userInfo.id}`)];
-      const areas = JSON.parse(sessionStorage.getItem("COMMON-areas"));
+      const areas = JSON.parse(localStorage.getItem("COMMON-areas"));
       if (!areas) {
         requestArr.push(network.getRequest(api.Area));
       }
@@ -361,7 +361,7 @@ export default {
           }
           if (res.length > 1) {
             const value = res[1].data.data;
-            sessionStorage.setItem("COMMON-areas", JSON.stringify(value));
+            localStorage.setItem("COMMON-areas", JSON.stringify(value));
             this.userFormLabel.splice(9, 1, {
               mode: "bank",
               type: "cascader",
@@ -478,9 +478,9 @@ export default {
       try {
         const prev = process.env.VUE_APP_KEYS ? process.env.VUE_APP_KEYS : "COMMON";
         if (this.imgUrl) {
-          Object.keys(sessionStorage).forEach((key) => {
+          Object.keys(localStorage).forEach((key) => {
             if (key.includes(prev)) {
-              sessionStorage.removeItem(key);
+              localStorage.removeItem(key);
             }
           });
           Object.keys(localStorage).forEach((key) => {
@@ -498,9 +498,9 @@ export default {
         }
         const res = await network.getRequest(api.Logout);
         if (res && res.data.code === 200) {
-          Object.keys(sessionStorage).forEach((key) => {
+          Object.keys(localStorage).forEach((key) => {
             if (key.includes(prev)) {
-              sessionStorage.removeItem(key);
+              localStorage.removeItem(key);
             }
           });
           Object.keys(localStorage).forEach((key) => {

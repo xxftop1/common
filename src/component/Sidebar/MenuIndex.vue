@@ -112,9 +112,9 @@ export default {
     },
     menuSelect(index, indexPath) {
       //清理项目详情里的菜单
-      sessionStorage.removeItem("COMMON-CHILD-MENUS");
+      localStorage.removeItem("COMMON-CHILD-MENUS");
       //清理上一个选中的菜单的按钮权限
-      sessionStorage.removeItem("COMMON-MENU-BTN");
+      localStorage.removeItem("COMMON-MENU-BTN");
     },
 
     handleMenuCollapse() {
