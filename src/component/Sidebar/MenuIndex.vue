@@ -1,22 +1,28 @@
 <template>
   <div class="sidebar" :style="{ width: width }">
-    <!--<div
-      class="sidebar-title aside-icon"
-      :class="asideShow === false ? 'headers-left-active' : ''"
-      @click="targetIcon"
+    <div
+      class="top-icon"
+      @click="handleMenuCollapse"
+      :title="isCollapse?'展开':'收起'"
     >
-      <i
-        :class="[targetIcon ? 'iconfont icon-shouqi-copy' : 'iconfont icon-zhankai']"
-        class="sidebar-fold"
-      ></i>
-    </div> @select="menuSelect" -->
     <i
+      
       :class="[
-        isCollapse ? 'iconfont icon-zhankai' : 'iconfont icon-shouqi',
+        isCollapse ? 'el-icon-s-unfold' : 'el-icon-s-fold',
+        'icon-tb',
+      ]"
+    ></i>
+    </div>
+    <!-- <span :title="isCollapse?'展开':'收起'">
+    <i
+      
+      :class="[
+        isCollapse ? 'el-icon-s-unfold' : 'el-icon-s-fold',
         'menu-tb',
       ]"
       @click="handleMenuCollapse"
     ></i>
+  </span> -->
     <div class="sidebar-box">
       <el-menu
         :default-openeds="defaultOpeneds"
@@ -134,51 +140,37 @@ export default {
   height: 100%;
   position: relative;
   z-index: 5;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 0px 4px 0px #dce0ee;
+  overflow-y: hidden;
 
-  .menu-tb {
-    position: absolute;
-    right: -17px;
-    top: 40%;
-    z-index: 10;
-    color: $--color-primary;
-    font-size: 50px;
-  }
-}
-.sidebar-title {
-  width: 100%;
-  height: 50px;
-  color: #ffffff;
-  box-sizing: border-box;
+  .top-icon {
+    background: $--base-background;
   text-align: center;
-  line-height: 50px;
-  font-size: 16px;
-  .sidebar-fold {
-    font-size: 20px;
-    padding: 4px 0;
-    opacity: 0.6;
-  }
-}
-.aside-icon {
-  background: $--base-background;
-  text-align: center;
-  color: #888;
   height: 30px;
   line-height: 30px;
+  width:100%;
   cursor: pointer;
-  border-bottom: 1px solid rgba(187, 187, 187, 0.5);
-  width: 180px;
-  margin-left: 10px;
+  .icon-tb {
+    color: $--color-primary;
+    font-size: 20px;
+  }
+  }
+ 
 }
 .sidebar-box {
   padding-top: 3px;
+  flex: 1;
   width: 100%;
   height: 100%;
   overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: hidden;
   -ms-overflow-style: none;
   overflow: "-moz-scrollbars-none";
   scrollbar-width: none; /*  火狐   */
-  box-shadow: 2px 0px 4px 0px #dce0ee;
+  box-shadow: none;
+  // box-shadow: 2px 0px 4px 0px #dce0ee;
   .el-menu {
     padding-bottom: 20px;
     height: calc(100vh - 50px);
